@@ -1,4 +1,4 @@
-module github.com/norun9/HyBird
+module github.com/norun9/Hybird
 
 go 1.20
 
