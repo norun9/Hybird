@@ -16,13 +16,13 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: testdb
-      MYSQL_USER: test
+      MYSQL_USER: hybird
       MYSQL_PASSWORD: test
     ports:
       - "3306:3306"
     volumes:
-      - backend/db:/var/lib/mysql
-      - backend/db/etc/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
+      - db:/var/lib/mysql
+      - ./backend/db/etc/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
     healthcheck:
       test: mysql -h127.0.0.1 -P3306 -uroot -e "quit"
 volumes:

@@ -26,10 +26,8 @@ const AppName = "HYBIRD"
 
 func Prepare() AppConfig {
 	viper.SetEnvPrefix(AppName)
-	viper.AutomaticEnv()
 
 	viper.SetConfigName("config")
-	viper.SetEnvPrefix(AppName)
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.SetConfigType("yaml")
 
