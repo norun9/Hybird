@@ -7,7 +7,6 @@ import (
 	"github.com/norun9/Hybird/internal/api/usecase/dto/input"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/output"
 	"github.com/norun9/Hybird/pkg/util"
-	"gorm.io/gorm"
 )
 
 type MessageInputBoundary interface {
@@ -17,20 +16,18 @@ type MessageInputBoundary interface {
 
 // NOTE:OutputBoundary interface definition is omitted to prevent code bloat.
 
-type messageInteractor struct {
-	dbClient          *gorm.DB
+type MessageInteractor struct {
 	messageRepository repository.MessageRepository
 }
 
 // NewMessageInteractor Polymorphism
-func NewMessageInteractor(dbClient *gorm.DB, messageRepository repository.MessageRepository) MessageInputBoundary {
-	return &messageInteractor{
-		dbClient,
+func NewMessageInteractor(messageRepository repository.MessageRepository) MessageInputBoundary {
+	return &MessageInteractor{
 		messageRepository,
 	}
 }
 
-func (i *messageInteractor) Create(ctx context.Context, p input.MessageInput) (result *output.MessageOutput, err error) {
+func (i *MessageInteractor) Create(ctx context.Context, p input.MessageInput) (result *output.MessageOutput, err error) {
 	var created *model.Message
 	if created, err = i.messageRepository.Create(ctx, &model.Message{
 		ID:      0,
@@ -45,7 +42,7 @@ func (i *messageInteractor) Create(ctx context.Context, p input.MessageInput) (r
 	}, nil
 }
 
-func (i *messageInteractor) List(ctx context.Context) (result []*output.MessageOutput, err error) {
+func (i *MessageInteractor) List(ctx context.Context) (result []*output.MessageOutput, err error) {
 	var messages []*model.Message
 	if messages, err = i.messageRepository.List(ctx); err != nil {
 		return nil, err
