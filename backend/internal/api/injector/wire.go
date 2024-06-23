@@ -16,7 +16,7 @@ var inputBoundarySet = wire.NewSet(
 	usecase.NewMessageInteractor,
 )
 
-func InitializeMessageInteractor() (usecase.MessageInputBoundary, error) {
+func InitializeMessageInteractor() (usecase.IMessageInputBoundary, error) {
 	wire.Build(inputBoundarySet)
 	return &usecase.MessageInteractor{}, nil
 }

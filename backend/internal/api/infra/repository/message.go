@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/cockroachdb/errors"
 	"github.com/norun9/Hybird/internal/api/domain/model"
-	domainRepository "github.com/norun9/Hybird/internal/api/domain/repository"
+	"github.com/norun9/Hybird/internal/api/domain/repository"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +13,7 @@ type messageRepository struct {
 }
 
 // NewMessageRepository Polymorphism
-func NewMessageRepository(dbClient *gorm.DB) domainRepository.MessageRepository {
+func NewMessageRepository(dbClient *gorm.DB) repository.IMessageRepository {
 	return &messageRepository{dbClient}
 }
 

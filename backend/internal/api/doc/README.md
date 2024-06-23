@@ -7,7 +7,6 @@ The architecture promotes separation of concerns, making the system more maintai
 ![The Clean Architecture](clean_architecture.png)
 > Chapter 22, Figure 22.1: The clean architecture. This image instance was copied from Uncle Bob’s article [here](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
-
 ## Directory Structure
 ```bash
 .

@@ -9,7 +9,7 @@ import (
 	"github.com/norun9/Hybird/pkg/util"
 )
 
-type MessageInputBoundary interface {
+type IMessageInputBoundary interface {
 	Create(ctx context.Context, input input.MessageInput) (*output.MessageOutput, error)
 	List(ctx context.Context) ([]*output.MessageOutput, error)
 }
@@ -17,11 +17,11 @@ type MessageInputBoundary interface {
 // NOTE:OutputBoundary interface definition is omitted to prevent code bloat.
 
 type MessageInteractor struct {
-	messageRepository repository.MessageRepository
+	messageRepository repository.IMessageRepository
 }
 
 // NewMessageInteractor Polymorphism
-func NewMessageInteractor(messageRepository repository.MessageRepository) MessageInputBoundary {
+func NewMessageInteractor(messageRepository repository.IMessageRepository) IMessageInputBoundary {
 	return &MessageInteractor{
 		messageRepository,
 	}
