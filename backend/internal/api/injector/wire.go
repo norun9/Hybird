@@ -10,13 +10,13 @@ import (
 	"github.com/norun9/Hybird/pkg/db"
 )
 
-var interactorSet = wire.NewSet(
+var inputBoundarySet = wire.NewSet(
 	db.NewDB,
 	repository.NewMessageRepository,
 	usecase.NewMessageInteractor,
 )
 
 func InitializeMessageInteractor() (usecase.MessageInputBoundary, error) {
-	wire.Build(interactorSet)
+	wire.Build(inputBoundarySet)
 	return &usecase.MessageInteractor{}, nil
 }

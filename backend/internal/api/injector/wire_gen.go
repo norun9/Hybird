@@ -24,4 +24,4 @@ func InitializeMessageInteractor() (usecase.MessageInputBoundary, error) {
 
 // wire.go:
 
-var interactorSet = wire.NewSet(db.NewDB, repository.NewMessageRepository, usecase.NewMessageInteractor)
+var inputBoundarySet = wire.NewSet(db.NewDB, repository.NewMessageRepository, usecase.NewMessageInteractor)
