@@ -1,1 +1,2 @@
 .idea
+/backend/pkg/db/dao/goose_db_version.gen.go

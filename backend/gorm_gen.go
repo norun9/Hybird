@@ -26,7 +26,6 @@ func main() {
 		dbConf.User, dbConf.Pass, dbConf.Host, dbConf.Port, dbConf.Name, timezone)
 	db, _ := gorm.Open(mysql.Open(dsn))
 	g.UseDB(db)
-	// NOTE: Please remember to write `GenerateModel(tableName)` code whenever adding new tables to the database.
-	g.GenerateModel("messages")
+	g.GenerateAllTable()
 	g.Execute()
 }
