@@ -1,10 +1,7 @@
 package model
 
-import "time"
+import (
+	"github.com/norun9/Hybird/pkg/db/dao"
+)
 
-type Message struct {
-	ID        int64
-	Content   string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-}
+type Message dao.Message

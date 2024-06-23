@@ -12,8 +12,9 @@ const timezone string = "Asia%2FTokyo"
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath:           "./internal/api/infra/model",
+		OutPath:           "./pkg/db/dao",
 		Mode:              gen.WithDefaultQuery, // generate mode
+		ModelPkgPath:      "dao",
 		WithUnitTest:      true,
 		FieldWithIndexTag: true,
 		FieldWithTypeTag:  true,
@@ -24,7 +25,8 @@ func main() {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=%s",
 		dbConf.User, dbConf.Pass, dbConf.Host, dbConf.Port, dbConf.Name, timezone)
 	db, _ := gorm.Open(mysql.Open(dsn))
-	g.UseDB(db) // reuse your gorm db
+	g.UseDB(db)
+	// NOTE: please write GenerateModel(tableName) codes when add some tables to db
 	g.GenerateModel("messages")
 	g.Execute()
 }

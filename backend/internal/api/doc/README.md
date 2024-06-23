@@ -15,7 +15,6 @@ The architecture promotes separation of concerns, making the system more maintai
 │   ├── model # Entities
 │   └── repository # Data Access Interface<I(Interface)>
 ├── infra
-│   ├── model # DAO (DataAccessObject)
 │   └── repository # Data Access
 ├── injector
 │   └── wire.go
