@@ -5,6 +5,8 @@ ensuring that the core business logic is independent of external frameworks, dat
 The architecture promotes separation of concerns, making the system more maintainable and scalable.
 
 ![The Clean Architecture](clean_architecture.png)
+> Chapter 22, Figure 22.1: The clean architecture. This image instance was copied from Uncle Bob’s article [here](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
+
 
 ---
 
@@ -34,6 +36,7 @@ The architecture promotes separation of concerns, making the system more maintai
 ### Corresponding Class Diagrams
 
 ![Clean Boundary](clean_boundary.jpg)
+> Chapter 22, Figure 22.2: A typical scenario for a web-based Java system utilizing a database
 
 ---
 
