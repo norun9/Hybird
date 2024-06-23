@@ -1,3 +1,3 @@
 | Documents                                                |
 |:---------------------------------------------------------|
-| [Backend Architecture](./backend/internal/api/README.md) |
+| [Backend Architecture](backend/internal/api/doc/README.md) |

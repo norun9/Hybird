@@ -4,7 +4,7 @@ This project follows the principles of Clean Architecture,
 ensuring that the core business logic is independent of external frameworks, databases, and other I/O components. 
 The architecture promotes separation of concerns, making the system more maintainable and scalable.
 
-![The Clean Architecture](./clean_architecture.png)
+![The Clean Architecture](clean_architecture.png)
 
 ---
 
@@ -34,7 +34,7 @@ The architecture promotes separation of concerns, making the system more maintai
 
 ### Corresponding Class Diagrams
 
-![Clean Boundary](./clean_boundary.jpg)
+![Clean Boundary](clean_boundary.jpg)
 
 ---
 
@@ -46,7 +46,7 @@ This layer is independent of any other layers and frameworks.
 
 - **Model**: Contains the business entities (e.g., message.go). 
 - **Repository**: Contains abstract interfaces for data access (e.g., IMessageRepository).  
-These interfaces are defined here to prevent the usecase layer from depending on the interface adapters.
+These interfaces are defined here to prevent the `usecase` layer from depending on the interface adapters.
 
 > [!NOTE]
 > Typically, `repository` is part of the interface adapters layer as `gateways`.  
