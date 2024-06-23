@@ -12,7 +12,7 @@ const timezone string = "Asia%2FTokyo"
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath:           "./internal/api/infrastructure/model",
+		OutPath:           "./internal/api/infra/model",
 		Mode:              gen.WithDefaultQuery, // generate mode
 		WithUnitTest:      true,
 		FieldWithIndexTag: true,
