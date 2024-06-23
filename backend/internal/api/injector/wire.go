@@ -4,16 +4,19 @@
 package injector
 
 import (
+	"github.com/google/wire"
+	"github.com/norun9/Hybird/internal/api/infra/repository"
+	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/pkg/db"
 )
 
-var infrastructureSet = wire.NewSet(
+var inputBoundarySet = wire.NewSet(
 	db.NewDB,
+	repository.NewMessageRepository,
+	usecase.NewMessageInteractor,
 )
 
-func InitializeControllers() {
-	wire.Build(
-		db.NewDB,
-	)
-	return
+func InitializeMessageInteractor() (usecase.MessageInputBoundary, error) {
+	wire.Build(inputBoundarySet)
+	return &usecase.MessageInteractor{}, nil
 }

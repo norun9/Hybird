@@ -20,7 +20,9 @@ func NewDB() *gorm.DB {
 
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN: dsn, // data source name
-	}), &gorm.Config{})
+	}), &gorm.Config{
+		QueryFields: true,
+	})
 
 	if err != nil {
 		panic(errors.Wrap(err, "failed to connect to database"))
