@@ -26,6 +26,7 @@ func main() {
 		dbConf.User, dbConf.Pass, dbConf.Host, dbConf.Port, dbConf.Name, timezone)
 	db, _ := gorm.Open(mysql.Open(dsn))
 	g.UseDB(db)
+	// NOTE:added goose_db_version.gen.go to .gitignore
 	g.GenerateAllTable()
 	g.Execute()
 }
