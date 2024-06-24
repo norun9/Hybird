@@ -13,7 +13,8 @@ type Config struct {
 }
 
 type AppConfig struct {
-	DBConfig DBConfig `mapstructure:"db"`
+	DBConfig     DBConfig     `mapstructure:"db"`
+	ServerConfig ServerConfig `mapstructure:"server"`
 }
 
 type DBConfig struct {
@@ -22,6 +23,10 @@ type DBConfig struct {
 	User string `mapstructure:"user" validate:"required"`
 	Pass string `mapstructure:"pass" validate:"required"`
 	Name string `mapstructure:"name" validate:"required"`
+}
+
+type ServerConfig struct {
+	Port string `mapstructure:"port" validate:"required"`
 }
 
 const AppName = "HYBIRD"

@@ -93,6 +93,6 @@ such as database implementations, external APIs.
 ### Dependency Injection (injector) 
 
 Located in the `injector` directory, this layer manages dependency injection configurations.  
-This directory is unrelated to Clean Architecture.
+This directory is unrelated to the clean architecture.
 
 - **Wire**: Configures and initializes the dependencies using Google Wire (e.g., wire.go).

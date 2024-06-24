@@ -12,9 +12,9 @@ const timezone string = "Asia%2FTokyo"
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
-		OutPath:           "./pkg/db/dao",
+		OutPath:           "./pkg/db/models",
 		Mode:              gen.WithDefaultQuery, // generate mode
-		ModelPkgPath:      "dao",
+		ModelPkgPath:      "models",
 		WithUnitTest:      true,
 		FieldWithIndexTag: true,
 		FieldWithTypeTag:  true,
