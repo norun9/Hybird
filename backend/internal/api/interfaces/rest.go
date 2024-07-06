@@ -10,6 +10,7 @@ import (
 type RestHandler interface {
 	Exec(ctx context.Context, w gin.ResponseWriter, r *http.Request, params interface{})
 	GetRoute(r *gin.Engine)
+	GetHealthCheckRoute(r *gin.Engine)
 	//GetHealthRouter(router chi.Router)
 }
 
@@ -22,6 +23,11 @@ func NewRestHandler() RestHandler {
 func (h restHandler) GetRoute(r *gin.Engine) {
 	v1 := r.Group("/v1")
 	router.GetMessageRoutes(v1)
+}
+
+func (h restHandler) GetHealthCheckRoute(r *gin.Engine) {
+	v1 := r.Group("/v1")
+	router.GetHealthCheckRoutes(v1)
 }
 
 func (h *restHandler) Exec(ctx context.Context, w gin.ResponseWriter, r *http.Request, params interface{}) {

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/norun9/Hybird/internal/api/injector"
 	"time"
 )
 
@@ -18,11 +19,10 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	//router.SetupCategoryRoutes(v1)
+	handler := injector.InitializeRestHandler()
+	handler.GetHealthCheckRoute(r)
 
-	//router.SetupRoutes(r)
-
-	if err := v1.Run(":8080"); err != nil {
-		log.Fatalf("failed to run server: %v", err)
+	if err := r.Run(":8080"); err != nil {
+		//log.Fatalf("failed to run server: %v", err)
 	}
 }
