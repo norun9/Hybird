@@ -1,3 +1,4 @@
 .idea
 /backend/vendor
 /backend/tmp
+.DS_Store
