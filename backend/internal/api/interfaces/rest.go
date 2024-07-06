@@ -1,17 +1,28 @@
 package interfaces
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/norun9/Hybird/pkg/config"
-	"log"
+	"github.com/norun9/Hybird/internal/api/interfaces/router"
+	"net/http"
 )
 
-func BootServer(c config.AppConfig) {
-	r := gin.Default()
+type RestHandler interface {
+	Exec(ctx context.Context, w gin.ResponseWriter, r *http.Request, params interface{})
+	GetRoute(r *gin.Engine)
+	//GetHealthRouter(router chi.Router)
+}
 
-	//router.SetupRoutes(r)
+type restHandler struct{}
 
-	if err := r.Run(":8080"); err != nil {
-		log.Fatalf("failed to run server: %v", err)
-	}
+func NewRestHandler() RestHandler {
+	return &restHandler{}
+}
+
+func (h restHandler) GetRoute(r *gin.Engine) {
+	v1 := r.Group("/v1")
+	router.GetMessageRoutes(v1)
+}
+
+func (h *restHandler) Exec(ctx context.Context, w gin.ResponseWriter, r *http.Request, params interface{}) {
 }

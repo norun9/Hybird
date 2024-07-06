@@ -3,5 +3,5 @@ package output
 // MessageOutput call from Controller layer
 type MessageOutput struct {
 	Content   string `json:"content"`
-	CreatedAt string `json:"created_at"`
+	CreatedAt string `json:"createdAt"`
 }
