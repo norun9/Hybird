@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/norun9/Hybird/pkg/db/models"
+	"github.com/norun9/Hybird/pkg/dbmodels"
 )
 
-type Message models.Message
+type Message dbmodels.Message

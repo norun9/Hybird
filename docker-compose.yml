@@ -16,7 +16,7 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: testdb
-      MYSQL_USER: hybird
+      MYSQL_USER: root
       MYSQL_PASSWORD: test
     ports:
       - "3306:3306"
