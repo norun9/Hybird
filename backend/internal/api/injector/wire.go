@@ -6,7 +6,9 @@ package injector
 import (
 	"github.com/google/wire"
 	"github.com/norun9/Hybird/internal/api/infra/repository"
+	"github.com/norun9/Hybird/internal/api/interfaces"
 	"github.com/norun9/Hybird/internal/api/usecase"
+	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/db"
 )
 
@@ -16,7 +18,12 @@ var inputBoundarySet = wire.NewSet(
 	usecase.NewMessageInteractor,
 )
 
-func InitializeMessageInteractor() (usecase.IMessageInputBoundary, error) {
+func InitializeRestHandler() (_ interfaces.RestHandler) {
+	wire.Build(interfaces.NewRestHandler)
+	return
+}
+
+func InitializeMessageInteractor(config.DBConfig) (usecase.IMessageInputBoundary, error) {
 	wire.Build(inputBoundarySet)
-	return &usecase.MessageInteractor{}, nil
+	return nil, nil
 }

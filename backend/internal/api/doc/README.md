@@ -4,7 +4,9 @@ This project follows the principles of Clean Architecture,
 ensuring that the core business logic is independent of external frameworks, databases, and other I/O components. 
 The architecture promotes separation of concerns, making the system more maintainable and scalable.
 
-![The Clean Architecture](clean_architecture.png)
+<div align="center">
+  <img src="clean_architecture.png" alt="The Clean Architecture">
+</div>
 > Chapter 22, Figure 22.1: The clean architecture. This image instance was copied from Uncle Bob’s article [here](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html).
 
 ## Directory Structure
@@ -32,7 +34,9 @@ The architecture promotes separation of concerns, making the system more maintai
 
 ### Corresponding Class Diagrams
 
-![Clean Boundary](clean_boundary.jpg)
+<div align="center">
+  <img src="clean_boundary.jpg" alt="Clean Boundary">
+</div>
 > Chapter 22, Figure 22.2: A typical scenario for a web-based Java system utilizing a database
 
 ## Layer Overview
@@ -66,7 +70,7 @@ It orchestrates the flow of data to and from the entities and leverages the inte
 
 ### Interface Adapters (interfaces)
 
-Located in the api/interfaces directory,  
+Located in the `interfaces` directory,  
 this layer converts data from the format most convenient for the use cases and entities to the format most convenient for external agents such as databases and the web.
 
 - **Controllers**: Handle the HTTP requests and responses, interacting with the use cases.
@@ -89,6 +93,6 @@ such as database implementations, external APIs.
 ### Dependency Injection (injector) 
 
 Located in the `injector` directory, this layer manages dependency injection configurations.  
-This directory is unrelated to Clean Architecture.
+This directory is unrelated to the clean architecture.
 
 - **Wire**: Configures and initializes the dependencies using Google Wire (e.g., wire.go).

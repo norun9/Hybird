@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/norun9/Hybird/pkg/db/dao"
+	"github.com/norun9/Hybird/pkg/dbmodels"
 )
 
-type Message dao.Message
+type Message dbmodels.Message

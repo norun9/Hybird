@@ -9,17 +9,24 @@ package injector
 import (
 	"github.com/google/wire"
 	"github.com/norun9/Hybird/internal/api/infra/repository"
+	"github.com/norun9/Hybird/internal/api/interfaces"
 	"github.com/norun9/Hybird/internal/api/usecase"
+	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/db"
 )
 
 // Injectors from wire.go:
 
-func InitializeMessageInteractor() (usecase.MessageInputBoundary, error) {
-	gormDB := db.NewDB()
-	messageRepository := repository.NewMessageRepository(gormDB)
-	messageInputBoundary := usecase.NewMessageInteractor(messageRepository)
-	return messageInputBoundary, nil
+func InitializeRestHandler() interfaces.RestHandler {
+	restHandler := interfaces.NewRestHandler()
+	return restHandler
+}
+
+func InitializeMessageInteractor(dbConfig config.DBConfig) (usecase.IMessageInputBoundary, error) {
+	sqlDB := db.NewDB(dbConfig)
+	iMessageRepository := repository.NewMessageRepository(sqlDB)
+	iMessageInputBoundary := usecase.NewMessageInteractor(iMessageRepository)
+	return iMessageInputBoundary, nil
 }
 
 // wire.go:

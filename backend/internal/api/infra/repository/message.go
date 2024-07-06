@@ -2,32 +2,31 @@ package repository
 
 import (
 	"context"
-	"github.com/cockroachdb/errors"
+	"database/sql"
 	"github.com/norun9/Hybird/internal/api/domain/model"
 	"github.com/norun9/Hybird/internal/api/domain/repository"
-	"gorm.io/gorm"
 )
 
 type messageRepository struct {
-	dbClient *gorm.DB
+	dbClient *sql.DB
 }
 
 // NewMessageRepository Polymorphism
-func NewMessageRepository(dbClient *gorm.DB) repository.IMessageRepository {
+func NewMessageRepository(dbClient *sql.DB) repository.IMessageRepository {
 	return &messageRepository{dbClient}
 }
 
 func (r *messageRepository) List(ctx context.Context) (result []*model.Message, err error) {
 	// TODO: Infinite Loading using Offset
-	if err := r.dbClient.WithContext(ctx).Find(&result).Limit(100).Error; err != nil {
-		return nil, errors.Wrap(err, "failed to list Message models")
-	}
+	//if err := r.dbClient.WithContext(ctx).Find(&result).Limit(100).Error; err != nil {
+	//	return nil, errors.Wrap(err, "failed to list Message models")
+	//}
 	return result, nil
 }
 
 func (r *messageRepository) Create(ctx context.Context, model *model.Message) (*model.Message, error) {
-	if err := r.dbClient.WithContext(ctx).Create(model).Error; err != nil {
-		return nil, errors.Wrap(err, "failed to create Message model")
-	}
+	//if err := r.dbClient.WithContext(ctx).Create(model).Error; err != nil {
+	//	return nil, errors.Wrap(err, "failed to create Message model")
+	//}
 	return model, nil
 }

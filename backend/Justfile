@@ -1,0 +1,3 @@
+sqlboiler:
+	sqlboiler mysql --pkgname dbmodels --add-soft-deletes --no-hooks --struct-tag-casing camel --output "./pkg/dbmodels" --wipe --config ./sqlboiler.toml
+	go test ./pkg/dbmodels/*.go -test.config ../../sqlboiler.toml
