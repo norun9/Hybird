@@ -1,6 +1,6 @@
 module github.com/norun9/Hybird
 
-go 1.20
+go 1.22
 
 require (
 	github.com/cockroachdb/errors v1.11.3

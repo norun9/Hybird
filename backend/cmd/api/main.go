@@ -1,4 +1,4 @@
-package api
+package main
 
 import (
 	"github.com/gin-contrib/cors"
@@ -10,8 +10,10 @@ import (
 
 func main() {
 	r := gin.Default()
+	// NOTE:using code: gin.SetMode(gin.ReleaseMode) in production
+	gin.SetMode(gin.DebugMode)
 	r.Use(cors.New(cors.Config{
-		//AllowOrigins:   TODO:[]string{"https://.com"},
+		AllowOrigins:     []string{"https://sample.com"}, // TODO:FIX
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposeHeaders:    []string{"Link"},

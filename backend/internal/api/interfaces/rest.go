@@ -11,13 +11,12 @@ type RestHandler interface {
 	Exec(ctx context.Context, w gin.ResponseWriter, r *http.Request, params interface{})
 	GetRoute(r *gin.Engine)
 	GetHealthCheckRoute(r *gin.Engine)
-	//GetHealthRouter(router chi.Router)
 }
 
 type restHandler struct{}
 
 func NewRestHandler() RestHandler {
-	return &restHandler{}
+	return restHandler{}
 }
 
 func (h restHandler) GetRoute(r *gin.Engine) {
@@ -30,5 +29,5 @@ func (h restHandler) GetHealthCheckRoute(r *gin.Engine) {
 	router.GetHealthCheckRoutes(v1)
 }
 
-func (h *restHandler) Exec(ctx context.Context, w gin.ResponseWriter, r *http.Request, params interface{}) {
+func (h restHandler) Exec(ctx context.Context, w gin.ResponseWriter, r *http.Request, params interface{}) {
 }

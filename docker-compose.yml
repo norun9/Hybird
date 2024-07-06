@@ -1,6 +1,16 @@
 version: "3.8"
 
 services:
+  air:
+    build:
+      context: "./backend"
+      dockerfile: "../dev/air/Dockerfile"
+    command: "air -c .air.toml"
+    working_dir: "/app/go/dev"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app/go/dev
   db:
     platform: "linux/amd64"
     build:
