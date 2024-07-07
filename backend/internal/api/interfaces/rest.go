@@ -51,7 +51,7 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 	})
 	route, ok := h.routeMap[Path{path, method}]
 	if !ok {
-		log.Logger.Error(fmt.Sprintf("Failed to exec path:%s method%s", path, method))
+		log.Logger.Error(fmt.Sprintf("failed to exec path:%s method:%s", path, method))
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
@@ -63,22 +63,19 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 
 	funcType := reflect.TypeOf(f)
 	if 1 < funcType.NumIn() {
-		// 引数2つ目が input params
 		inputType := funcType.In(1)
 		if inputType.Kind() != reflect.Slice {
 			if err = validate.Struct(params); err != nil {
-				http.Error(w, http.StatusText(400), 400)
+				http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 				return
 			}
 		}
-		// indirectを使って、値を参照する
 		args = append(args, reflect.Indirect(reflect.ValueOf(params)))
 	}
 
 	fv := reflect.ValueOf(f)
 	results := fv.Call(args)
 	var responseJSON []byte
-	// 返り値は1つ or 2つ
 	switch len(results) {
 	case 1:
 		errResult := results[0]
@@ -89,19 +86,17 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	case 2:
-		normalResult, errResult := results[0], results[1]
+		result, errResult := results[0], results[1]
 		if errResult.Interface() == nil {
-			if responseJSON, err = json.Marshal(normalResult.Interface()); err != nil {
+			if responseJSON, err = json.Marshal(result.Interface()); err != nil {
 				http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 				return
 			}
 		}
 	default:
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-		log.Logger.Error("Invalid result")
 		return
 	}
-	// response to front
+	// response json value to front-end using response writer
 	w.Header().Set("Content-Type", "application/json")
 	if _, _err := w.Write(responseJSON); _err != nil {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)

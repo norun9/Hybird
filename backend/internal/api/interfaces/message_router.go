@@ -6,10 +6,16 @@ import (
 )
 
 func (h *restHandler) GetMessageRoutes(r *gin.RouterGroup) {
-	gr := r.Group("/messages")
+	gr := r.Group("messages")
 	gr.GET("", func(c *gin.Context) {
 		params := input.MessageList{
 			Paging: GetPagingInfo(c.Request),
+		}
+		h.Exec(c, params)
+	})
+	gr.GET("ws", func(c *gin.Context) {
+		params := input.MessageInput{
+			Content: c.Request.URL.Query().Get("content"),
 		}
 		h.Exec(c, params)
 	})
