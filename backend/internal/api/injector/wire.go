@@ -18,12 +18,12 @@ var inputBoundarySet = wire.NewSet(
 	usecase.NewMessageInteractor,
 )
 
-func InitializeRestHandler() (_ interfaces.RestHandler) {
-	wire.Build(interfaces.NewRestHandler)
-	return
-}
+var routeMapSet = wire.NewSet(
+	inputBoundarySet,
+	interfaces.GetMapRoute,
+)
 
-func InitializeMessageInteractor(config.DBConfig) (usecase.IMessageInputBoundary, error) {
-	wire.Build(inputBoundarySet)
-	return nil, nil
+func InitializeRestHandler(config.DBConfig) (_ interfaces.IRestHandler) {
+	wire.Build(routeMapSet, interfaces.NewRestHandler)
+	return
 }

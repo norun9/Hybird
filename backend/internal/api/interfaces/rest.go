@@ -1,32 +1,35 @@
 package interfaces
 
 import (
-	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/norun9/Hybird/internal/api/interfaces/router"
 )
 
-type RestHandler interface {
-	Exec(ctx context.Context, c *gin.Context, params interface{})
+type IRestHandler interface {
+	Exec(c *gin.Context, params interface{})
 	GetRoute(r *gin.Engine)
 	GetHealthCheckRoute(r *gin.Engine)
 }
 
-type restHandler struct{}
+type restHandler struct {
+	routeMap map[Path]Handler
+}
 
-func NewRestHandler() RestHandler {
-	return &restHandler{}
+func NewRestHandler(routeMap map[Path]Handler) IRestHandler {
+	return &restHandler{routeMap}
 }
 
 func (h *restHandler) GetRoute(r *gin.Engine) {
 	v1 := r.Group("/v1")
-	router.GetMessageRoutes(v1)
+	h.GetMessageRoutes(v1)
 }
 
 func (h *restHandler) GetHealthCheckRoute(r *gin.Engine) {
 	v1 := r.Group("/v1")
-	router.GetHealthCheckRoutes(v1)
+	h.GetHealthCheckRoutes(v1)
 }
 
-func (h *restHandler) Exec(ctx context.Context, c *gin.Context, params interface{}) {
+func (h *restHandler) Exec(c *gin.Context, params interface{}) {
+	//ctx := c.Request.Context()
+	//r := c.Request
+	//w := c.Writer
 }

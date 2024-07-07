@@ -17,18 +17,19 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeRestHandler() interfaces.RestHandler {
-	restHandler := interfaces.NewRestHandler()
-	return restHandler
-}
-
-func InitializeMessageInteractor(dbConfig config.DBConfig) (usecase.IMessageInputBoundary, error) {
+func InitializeRestHandler(dbConfig config.DBConfig) interfaces.IRestHandler {
 	sqlDB := db.NewDB(dbConfig)
 	iMessageRepository := repository.NewMessageRepository(sqlDB)
 	iMessageInputBoundary := usecase.NewMessageInteractor(iMessageRepository)
-	return iMessageInputBoundary, nil
+	v := interfaces.GetMapRoute(iMessageInputBoundary)
+	iRestHandler := interfaces.NewRestHandler(v)
+	return iRestHandler
 }
 
 // wire.go:
 
 var inputBoundarySet = wire.NewSet(db.NewDB, repository.NewMessageRepository, usecase.NewMessageInteractor)
+
+var routeMapSet = wire.NewSet(
+	inputBoundarySet, interfaces.GetMapRoute,
+)
