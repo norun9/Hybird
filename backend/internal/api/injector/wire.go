@@ -7,6 +7,7 @@ import (
 	"github.com/google/wire"
 	"github.com/norun9/Hybird/internal/api/infra/repository"
 	"github.com/norun9/Hybird/internal/api/interfaces"
+	"github.com/norun9/Hybird/internal/api/interfaces/controller"
 	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/db"
@@ -14,16 +15,22 @@ import (
 
 var inputBoundarySet = wire.NewSet(
 	db.NewDB,
+	db.NewDBClient,
 	repository.NewMessageRepository,
 	usecase.NewMessageInteractor,
 )
 
-func InitializeRestHandler() (_ interfaces.RestHandler) {
-	wire.Build(interfaces.NewRestHandler)
-	return
-}
+var controllerSet = wire.NewSet(
+	controller.NewMessageController,
+)
 
-func InitializeMessageInteractor(config.DBConfig) (usecase.IMessageInputBoundary, error) {
-	wire.Build(inputBoundarySet)
-	return nil, nil
+var routeMapSet = wire.NewSet(
+	inputBoundarySet,
+	controllerSet,
+	interfaces.GetMapRoute,
+)
+
+func InitializeRestHandler(config.DBConfig) (_ interfaces.IRestHandler) {
+	wire.Build(routeMapSet, interfaces.NewRestHandler)
+	return
 }

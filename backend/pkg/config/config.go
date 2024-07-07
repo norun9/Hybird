@@ -19,7 +19,6 @@ type AppConfig struct {
 
 type DBConfig struct {
 	Host string `mapstructure:"host" validate:"required"`
-	Port string `mapstructure:"port" validate:"required"`
 	User string `mapstructure:"user" validate:"required"`
 	Pass string `mapstructure:"pass" validate:"required"`
 	Name string `mapstructure:"name" validate:"required"`

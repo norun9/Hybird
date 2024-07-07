@@ -10,6 +10,7 @@ import (
 	"github.com/google/wire"
 	"github.com/norun9/Hybird/internal/api/infra/repository"
 	"github.com/norun9/Hybird/internal/api/interfaces"
+	"github.com/norun9/Hybird/internal/api/interfaces/controller"
 	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/db"
@@ -17,18 +18,24 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeRestHandler() interfaces.RestHandler {
-	restHandler := interfaces.NewRestHandler()
-	return restHandler
-}
-
-func InitializeMessageInteractor(dbConfig config.DBConfig) (usecase.IMessageInputBoundary, error) {
+func InitializeRestHandler(dbConfig config.DBConfig) interfaces.IRestHandler {
 	sqlDB := db.NewDB(dbConfig)
-	iMessageRepository := repository.NewMessageRepository(sqlDB)
+	client := db.NewDBClient(sqlDB)
+	iMessageRepository := repository.NewMessageRepository(client)
 	iMessageInputBoundary := usecase.NewMessageInteractor(iMessageRepository)
-	return iMessageInputBoundary, nil
+	iMessageController := controller.NewMessageController(iMessageInputBoundary)
+	v := interfaces.GetMapRoute(iMessageController)
+	iRestHandler := interfaces.NewRestHandler(v)
+	return iRestHandler
 }
 
 // wire.go:
 
-var inputBoundarySet = wire.NewSet(db.NewDB, repository.NewMessageRepository, usecase.NewMessageInteractor)
+var inputBoundarySet = wire.NewSet(db.NewDB, db.NewDBClient, repository.NewMessageRepository, usecase.NewMessageInteractor)
+
+var controllerSet = wire.NewSet(controller.NewMessageController)
+
+var routeMapSet = wire.NewSet(
+	inputBoundarySet,
+	controllerSet, interfaces.GetMapRoute,
+)
