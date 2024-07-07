@@ -20,7 +20,8 @@ import (
 
 func InitializeRestHandler(dbConfig config.DBConfig) interfaces.IRestHandler {
 	sqlDB := db.NewDB(dbConfig)
-	iMessageRepository := repository.NewMessageRepository(sqlDB)
+	client := db.NewDBClient(sqlDB)
+	iMessageRepository := repository.NewMessageRepository(client)
 	iMessageInputBoundary := usecase.NewMessageInteractor(iMessageRepository)
 	iMessageController := controller.NewMessageController(iMessageInputBoundary)
 	v := interfaces.GetMapRoute(iMessageController)
@@ -30,7 +31,7 @@ func InitializeRestHandler(dbConfig config.DBConfig) interfaces.IRestHandler {
 
 // wire.go:
 
-var inputBoundarySet = wire.NewSet(db.NewDB, repository.NewMessageRepository, usecase.NewMessageInteractor)
+var inputBoundarySet = wire.NewSet(db.NewDB, db.NewDBClient, repository.NewMessageRepository, usecase.NewMessageInteractor)
 
 var controllerSet = wire.NewSet(controller.NewMessageController)
 

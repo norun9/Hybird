@@ -15,6 +15,7 @@ import (
 
 var inputBoundarySet = wire.NewSet(
 	db.NewDB,
+	db.NewDBClient,
 	repository.NewMessageRepository,
 	usecase.NewMessageInteractor,
 )

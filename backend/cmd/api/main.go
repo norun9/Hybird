@@ -7,7 +7,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/norun9/Hybird/internal/api/injector"
 	"github.com/norun9/Hybird/pkg/config"
-	"github.com/norun9/Hybird/pkg/db"
 	"github.com/norun9/Hybird/pkg/log"
 	"go.uber.org/zap"
 	"time"
@@ -61,8 +60,7 @@ func main() {
 
 	handler := injector.InitializeRestHandler(c.DBConfig)
 	handler.GetHealthCheckRoute(r)
-
-	db.SetBoil()
+	handler.GetRoute(r)
 
 	if err := r.Run(":8080"); err != nil {
 		log.Logger.Fatal("failed to run server", zap.Error(err))

@@ -11,7 +11,10 @@ services:
       - "8080:8080"
     volumes:
       - ./backend:/app/go/dev
+    depends_on:
+      - db
   db:
+    container_name: "mysql"
     platform: "linux/amd64"
     build:
       context: "dev/db"
@@ -26,7 +29,7 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: testdb
-      MYSQL_USER: root
+      MYSQL_USER: hybird
       MYSQL_PASSWORD: test
     ports:
       - "3306:3306"
@@ -34,6 +37,6 @@ services:
       - db:/var/lib/mysql
       - ./backend/db/etc/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
     healthcheck:
-      test: mysql -h127.0.0.1 -P3306 -uroot -e "quit"
+      test: mysql -h127.0.0.1 -P3306 -uhybird -e "quit"
 volumes:
   db:

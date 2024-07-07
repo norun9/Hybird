@@ -7,7 +7,7 @@ import (
 
 func (h *restHandler) GetMessageRoutes(r *gin.RouterGroup) {
 	gr := r.Group("/messages")
-	gr.GET("/", func(c *gin.Context) {
+	gr.GET("", func(c *gin.Context) {
 		params := input.MessageList{
 			Paging: GetPagingInfo(c.Request),
 		}

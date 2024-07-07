@@ -6,6 +6,8 @@ import (
 	"github.com/norun9/Hybird/internal/api/domain/repository"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/input"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/output"
+	"github.com/norun9/Hybird/pkg/db"
+	"github.com/norun9/Hybird/pkg/dbmodels"
 	"github.com/norun9/Hybird/pkg/util"
 )
 
@@ -44,7 +46,11 @@ func (i *messageInteractor) Create(ctx context.Context, p input.MessageInput) (r
 
 func (i *messageInteractor) List(ctx context.Context, p input.MessageList) (result []*output.MessageOutput, err error) {
 	var messages []*model.Message
-	if messages, err = i.messageRepository.List(ctx); err != nil {
+	// TODO: build query mods paging
+	if messages, err = i.messageRepository.List(
+		ctx,
+		db.OrderBy(dbmodels.MessageColumns.CreatedAt, false),
+	); err != nil {
 		return nil, err
 	}
 	for _, message := range messages {

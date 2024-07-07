@@ -2,12 +2,33 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"github.com/norun9/Hybird/pkg/dbmodels"
+	"github.com/norun9/Hybird/pkg/util"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 	"time"
 )
+
+type Query = qm.QueryMod
+
+type Client struct {
+	dbClient *sql.DB
+}
+
+func (c Client) Get(ctx context.Context) SQLHandler {
+	if tx := util.GetDBTx(ctx); tx != nil {
+		return tx
+	}
+	return c.dbClient
+}
+
+func NewDBClient(db *sql.DB) Client {
+	initLocal()
+	setBoil()
+	return Client{db}
+}
 
 const location = "Asia/Tokyo"
 
@@ -20,8 +41,7 @@ func initLocal() {
 	time.Local = loc
 }
 
-func SetBoil() {
-	initLocal()
+func setBoil() {
 	boil.SetLocation(time.Local)
 	boil.DebugMode = true
 }
@@ -31,7 +51,15 @@ type SQLHandler interface {
 }
 
 func InnerJoin(outerTable, outerColumn, drivingTable, drivingColumn string) qm.QueryMod {
-	return qm.InnerJoin(fmt.Sprintf("%s on %s.%s = %s.%s", outerTable, drivingTable, drivingColumn, outerTable, outerColumn))
+	return qm.InnerJoin(
+		fmt.Sprintf(
+			"%s on %s.%s = %s.%s",
+			outerTable,
+			drivingTable,
+			drivingColumn,
+			outerTable,
+			outerColumn,
+		))
 }
 
 func Count(ctx context.Context, dbClient SQLHandler, tableName string, queries []qm.QueryMod) (count int64, err error) {
@@ -43,7 +71,12 @@ func CountByColumn(ctx context.Context, dbClient SQLHandler, tableName, column s
 		Count int64
 	}{}
 	if err = dbmodels.NewQuery(append(queries,
-		qm.Select(fmt.Sprintf("count(distinct %s.%s) as count", tableName, column)),
+		qm.Select(
+			fmt.Sprintf(
+				"count(distinct %s.%s) as count",
+				tableName,
+				column,
+			)),
 		qm.From(tableName),
 	)...).Bind(ctx, dbClient, &totalCount); err != nil {
 		return 0, err

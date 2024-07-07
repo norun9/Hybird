@@ -4,8 +4,7 @@ dev:
   server:
     port: "3000"
   db:
-    host: "localhost"
-    port: "3306"
+    host: "mysql"
     user: "hybird"
     pass: "test"
     name: "testdb"
