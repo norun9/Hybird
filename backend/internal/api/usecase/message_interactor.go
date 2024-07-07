@@ -11,23 +11,23 @@ import (
 
 type IMessageInputBoundary interface {
 	Create(ctx context.Context, input input.MessageInput) (*output.MessageOutput, error)
-	List(ctx context.Context) ([]*output.MessageOutput, error)
+	List(ctx context.Context, p input.MessageList) ([]*output.MessageOutput, error)
 }
 
 // NOTE:OutputBoundary interface definition is omitted to prevent code bloat.
 
-type MessageInteractor struct {
+type messageInteractor struct {
 	messageRepository repository.IMessageRepository
 }
 
 // NewMessageInteractor Polymorphism
 func NewMessageInteractor(messageRepository repository.IMessageRepository) IMessageInputBoundary {
-	return &MessageInteractor{
+	return &messageInteractor{
 		messageRepository,
 	}
 }
 
-func (i *MessageInteractor) Create(ctx context.Context, p input.MessageInput) (result *output.MessageOutput, err error) {
+func (i *messageInteractor) Create(ctx context.Context, p input.MessageInput) (result *output.MessageOutput, err error) {
 	var created *model.Message
 	if created, err = i.messageRepository.Create(ctx, &model.Message{
 		ID:      0,
@@ -42,7 +42,7 @@ func (i *MessageInteractor) Create(ctx context.Context, p input.MessageInput) (r
 	}, nil
 }
 
-func (i *MessageInteractor) List(ctx context.Context) (result []*output.MessageOutput, err error) {
+func (i *messageInteractor) List(ctx context.Context, p input.MessageList) (result []*output.MessageOutput, err error) {
 	var messages []*model.Message
 	if messages, err = i.messageRepository.List(ctx); err != nil {
 		return nil, err

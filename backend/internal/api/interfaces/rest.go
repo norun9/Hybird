@@ -2,7 +2,12 @@ package interfaces
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/norun9/Hybird/internal/api/domain/model"
+	"net/http"
+	"strconv"
 )
+
+var defaultLimit = 100
 
 type IRestHandler interface {
 	Exec(c *gin.Context, params interface{})
@@ -32,4 +37,29 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 	//ctx := c.Request.Context()
 	//r := c.Request
 	//w := c.Writer
+}
+
+func GetPagingInfo(r *http.Request) (paging model.Paging) {
+	limit := r.URL.Query().Get("limit")
+	paramLimit, err := strconv.Atoi(limit)
+	if err != nil || paramLimit == 0 {
+		paramLimit = defaultLimit
+	}
+
+	offset := r.URL.Query().Get("offset")
+	paramOffset, err := strconv.Atoi(offset)
+	if err != nil {
+		paramOffset = 0
+	}
+
+	page := r.URL.Query().Get("page")
+	paramPage, err := strconv.Atoi(page)
+	if err != nil {
+		paramPage = 1
+	}
+	return model.Paging{
+		Offset: paramOffset,
+		Limit:  paramLimit,
+		Page:   paramPage,
+	}
 }

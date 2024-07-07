@@ -1,6 +1,8 @@
 package interfaces
 
-import "github.com/norun9/Hybird/internal/api/usecase"
+import (
+	"github.com/norun9/Hybird/internal/api/interfaces/controller"
+)
 
 type Method string
 
@@ -20,8 +22,8 @@ type Handler struct {
 	Func interface{}
 }
 
-func GetMapRoute(messageInteractor usecase.IMessageInputBoundary) map[Path]Handler {
+func GetMapRoute(messageController controller.IMessageController) map[Path]Handler {
 	return map[Path]Handler{
-		{"/v1/messages", Get}: {messageInteractor.List},
+		{"/v1/messages", Get}: {messageController.List},
 	}
 }

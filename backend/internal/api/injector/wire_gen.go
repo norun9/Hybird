@@ -10,6 +10,7 @@ import (
 	"github.com/google/wire"
 	"github.com/norun9/Hybird/internal/api/infra/repository"
 	"github.com/norun9/Hybird/internal/api/interfaces"
+	"github.com/norun9/Hybird/internal/api/interfaces/controller"
 	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/db"
@@ -21,7 +22,8 @@ func InitializeRestHandler(dbConfig config.DBConfig) interfaces.IRestHandler {
 	sqlDB := db.NewDB(dbConfig)
 	iMessageRepository := repository.NewMessageRepository(sqlDB)
 	iMessageInputBoundary := usecase.NewMessageInteractor(iMessageRepository)
-	v := interfaces.GetMapRoute(iMessageInputBoundary)
+	iMessageController := controller.NewMessageController(iMessageInputBoundary)
+	v := interfaces.GetMapRoute(iMessageController)
 	iRestHandler := interfaces.NewRestHandler(v)
 	return iRestHandler
 }
@@ -30,6 +32,9 @@ func InitializeRestHandler(dbConfig config.DBConfig) interfaces.IRestHandler {
 
 var inputBoundarySet = wire.NewSet(db.NewDB, repository.NewMessageRepository, usecase.NewMessageInteractor)
 
+var controllerSet = wire.NewSet(controller.NewMessageController)
+
 var routeMapSet = wire.NewSet(
-	inputBoundarySet, interfaces.GetMapRoute,
+	inputBoundarySet,
+	controllerSet, interfaces.GetMapRoute,
 )
