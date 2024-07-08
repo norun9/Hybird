@@ -32,10 +32,3 @@ func InitializeRestHandler(dbConfig config.DBConfig) interfaces.IRestHandler {
 // wire.go:
 
 var inputBoundarySet = wire.NewSet(db.NewDB, db.NewDBClient, repository.NewMessageRepository, usecase.NewMessageInteractor)
-
-var controllerSet = wire.NewSet(controller.NewMessageController)
-
-var routeMapSet = wire.NewSet(
-	inputBoundarySet,
-	controllerSet, interfaces.GetMapRoute,
-)

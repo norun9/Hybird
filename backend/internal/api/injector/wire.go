@@ -20,17 +20,12 @@ var inputBoundarySet = wire.NewSet(
 	usecase.NewMessageInteractor,
 )
 
-var controllerSet = wire.NewSet(
-	controller.NewMessageController,
-)
-
-var routeMapSet = wire.NewSet(
-	inputBoundarySet,
-	controllerSet,
-	interfaces.GetMapRoute,
-)
-
 func InitializeRestHandler(config.DBConfig) (_ interfaces.IRestHandler) {
-	wire.Build(routeMapSet, interfaces.NewRestHandler)
+	wire.Build(
+		inputBoundarySet,
+		controller.NewMessageController,
+		interfaces.GetMapRoute,
+		interfaces.NewRestHandler,
+	)
 	return
 }
