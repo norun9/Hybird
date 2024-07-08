@@ -5,8 +5,10 @@ import (
 	"github.com/cockroachdb/errors"
 	"github.com/norun9/Hybird/internal/api/domain/model"
 	"github.com/norun9/Hybird/internal/api/domain/repository"
+	"github.com/norun9/Hybird/internal/api/infra/transfer"
 	"github.com/norun9/Hybird/pkg/db"
 	"github.com/norun9/Hybird/pkg/dbmodels"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
@@ -38,9 +40,10 @@ func (r *messageRepository) List(ctx context.Context, queryMods ...db.Query) (re
 	return result, nil
 }
 
-func (r *messageRepository) Create(ctx context.Context, model *model.Message) (*model.Message, error) {
-	//if err := r.dbClient.WithContext(ctx).Create(model).Error; err != nil {
-	//	return nil, errors.Wrap(err, "failed to create Message model")
-	//}
-	return model, nil
+func (r *messageRepository) Create(ctx context.Context, model *model.Message) (int64, error) {
+	entity := transfer.ToMessageEntity(model)
+	if err := entity.Insert(ctx, r.dbClient.Get(ctx), boil.Infer()); err != nil {
+		return 0, errors.Wrap(err, "ErrInsert")
+	}
+	return entity.ID, nil
 }
