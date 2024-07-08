@@ -40,19 +40,24 @@ func (h *restHandler) GetHealthCheckRoute(r *gin.Engine) {
 	h.GetHealthCheckRoutes(v1)
 }
 
+func buildPath(r *http.Request) string {
+	re := regexp.MustCompile(`/\d+`)
+	path := re.ReplaceAllStringFunc(r.URL.Path, func(match string) string {
+		return "/{id}"
+	})
+	return path
+}
+
 func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 	var err error
 	r := c.Request
 	w := c.Writer
 	method := Method(r.Method)
-	re := regexp.MustCompile(`/\d+`)
-	path := re.ReplaceAllStringFunc(r.URL.Path, func(match string) string {
-		return "/{id}"
-	})
+	path := buildPath(r)
 	route, ok := h.routeMap[Path{path, method}]
 	if !ok {
-		log.Logger.Error(fmt.Sprintf("Failed to exec path:%s method%s", path, method))
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		log.Logger.Error(fmt.Sprintf("Failed to exec. path:%s method:%s", path, method))
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
 	f := route.Func
@@ -60,25 +65,23 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 	args := []reflect.Value{
 		reflect.ValueOf(c),
 	}
-
 	funcType := reflect.TypeOf(f)
 	if 1 < funcType.NumIn() {
-		// 引数2つ目が input params
+		// the second element of argument is input
 		inputType := funcType.In(1)
 		if inputType.Kind() != reflect.Slice {
 			if err = validate.Struct(params); err != nil {
-				http.Error(w, http.StatusText(400), 400)
+				// input struct validation failed
+				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
 		}
-		// indirectを使って、値を参照する
 		args = append(args, reflect.Indirect(reflect.ValueOf(params)))
 	}
 
 	fv := reflect.ValueOf(f)
 	results := fv.Call(args)
 	var responseJSON []byte
-	// 返り値は1つ or 2つ
 	switch len(results) {
 	case 1:
 		errResult := results[0]
@@ -86,26 +89,33 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 			return
 		}
 		err = errResult.Interface().(error)
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		log.Logger.Error("Execution error", zap.Error(err))
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	case 2:
-		normalResult, errResult := results[0], results[1]
-		if errResult.Interface() == nil {
-			if responseJSON, err = json.Marshal(normalResult.Interface()); err != nil {
-				http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-				return
-			}
+		result, errResult := results[0], results[1]
+		if errResult.Interface() != nil {
+			err = errResult.Interface().(error)
+			log.Logger.Error("Execution error", zap.Error(err))
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		// If concrete results are available, convert them to JSON
+		if responseJSON, err = json.Marshal(result.Interface()); err != nil {
+			log.Logger.Error("Failed to marshal response", zap.Error(err))
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 	default:
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-		log.Logger.Error("Invalid result")
+		log.Logger.Error("Execution error", zap.Error(err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-	// response to front
+	// response json value to front-end using response writer
 	w.Header().Set("Content-Type", "application/json")
 	if _, _err := w.Write(responseJSON); _err != nil {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-		log.Logger.Error("Failed to write response", zap.Error(err))
+		log.Logger.Error("Failed to write response", zap.Error(_err))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 }

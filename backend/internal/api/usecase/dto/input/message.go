@@ -6,7 +6,6 @@ type MessageList struct {
 	Paging model.Paging `json:"paging"`
 }
 
-// MessageInput call from Controller layer
 type MessageInput struct {
 	Content string `json:"content"`
 }

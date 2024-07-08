@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   air:
+    container_name: "air"
     build:
       context: "./backend"
       dockerfile: "../dev/air/Dockerfile"
@@ -37,6 +38,6 @@ services:
       - db:/var/lib/mysql
       - ./backend/db/etc/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
     healthcheck:
-      test: mysql -h127.0.0.1 -P3306 -uhybird -e "quit"
+      test: [ "CMD", "mysql", "-h127.0.0.1", "-P3306", "-uhybird", "-e", "quit" ]
 volumes:
   db:
