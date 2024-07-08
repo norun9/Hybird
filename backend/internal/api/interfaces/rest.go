@@ -72,6 +72,7 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 		if inputType.Kind() != reflect.Slice {
 			if err = validate.Struct(params); err != nil {
 				// input struct validation failed
+				log.Logger.Error("Validation struct error", zap.Error(err))
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
