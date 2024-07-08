@@ -4,14 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/input"
+	"github.com/norun9/Hybird/internal/api/usecase/dto/output"
 	ws "github.com/norun9/Hybird/pkg/websocket"
-	"net/http"
 )
 
 type IMessageController interface {
-	List(c *gin.Context, p input.MessageList)
-	Send(c *gin.Context, _ interface{})
-	Create(c *gin.Context, p input.MessageInput)
+	List(c *gin.Context, p input.MessageList) ([]*output.MessageOutput, error)
+	Send(c *gin.Context, _ interface{}) error
+	Create(c *gin.Context, p input.MessageInput) (*output.MessageOutput, error)
 }
 
 type messageController struct {
@@ -24,41 +24,30 @@ func NewMessageController(messageIB usecase.IMessageInputBoundary) IMessageContr
 	}
 }
 
-func (mc *messageController) List(c *gin.Context, p input.MessageList) {
+func (mc *messageController) List(c *gin.Context, p input.MessageList) ([]*output.MessageOutput, error) {
 	ctx := c.Request.Context()
-	messages, err := mc.messageIB.List(ctx, p)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, messages)
+	return mc.messageIB.List(ctx, p)
 }
 
-func (mc *messageController) Create(c *gin.Context, p input.MessageInput) {
+func (mc *messageController) Create(c *gin.Context, p input.MessageInput) (*output.MessageOutput, error) {
 	ctx := c.Request.Context()
-	messages, err := mc.messageIB.Create(ctx, p)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, messages)
+	return mc.messageIB.Create(ctx, p)
 }
 
-func (mc *messageController) Send(c *gin.Context, _ interface{}) {
+func (mc *messageController) Send(c *gin.Context, _ interface{}) error {
 	go ws.HandleMessages()
 	conn, err := ws.Upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return err
 	}
 	defer conn.Close()
 	ws.Clients[conn] = true
 	for {
 		t, msg, err := conn.ReadMessage()
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			break
 		}
 		ws.Broadcast <- ws.Message{Type: t, Message: msg}
 	}
+	return nil
 }

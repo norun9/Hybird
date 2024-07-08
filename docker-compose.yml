@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   air:
+    container_name: "air"
     build:
       context: "./backend"
       dockerfile: "../dev/air/Dockerfile"
