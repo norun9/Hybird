@@ -24,6 +24,14 @@ func NewMessageRepository(dbClient db.Client) repository.IMessageRepository {
 	return &messageRepository{dbClient}
 }
 
+func (r *messageRepository) GetCount(ctx context.Context, queryMods ...db.Query) (totalCount int64, err error) {
+	queries := append(queryMods, []qm.QueryMod{}...)
+	if totalCount, err = db.Count(ctx, r.dbClient.Get(ctx), dbmodels.TableNames.Messages, queries); err != nil {
+		return 0, errors.Wrap(err, merror.ErrDatabase.Error())
+	}
+	return totalCount, nil
+}
+
 func (r *messageRepository) List(ctx context.Context, queryMods ...db.Query) (result []*model.Message, err error) {
 	queries := append(queryMods, []qm.QueryMod{
 		db.Distinct(dbmodels.TableNames.Messages),

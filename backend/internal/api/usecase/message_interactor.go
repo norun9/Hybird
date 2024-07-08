@@ -19,19 +19,21 @@ type IMessageInputBoundary interface {
 // NOTE:OutputBoundary interface definition is omitted to prevent code bloat.
 
 type messageInteractor struct {
-	messageRepository repository.IMessageRepository
+	messageRepo repository.IMessageRepository
+	pagingRepo  repository.Paging
 }
 
 // NewMessageInteractor Polymorphism
-func NewMessageInteractor(messageRepository repository.IMessageRepository) IMessageInputBoundary {
+func NewMessageInteractor(messageRepo repository.IMessageRepository, pagingRepo repository.Paging) IMessageInputBoundary {
 	return &messageInteractor{
-		messageRepository,
+		messageRepo,
+		pagingRepo,
 	}
 }
 
 func (i *messageInteractor) Create(ctx context.Context, p input.MessageInput) (result *output.MessageOutput, err error) {
 	var created *model.Message
-	if created, err = i.messageRepository.Create(ctx, &model.Message{
+	if created, err = i.messageRepo.Create(ctx, &model.Message{
 		Content: p.Content,
 	}); err != nil {
 		return nil, err
@@ -44,10 +46,22 @@ func (i *messageInteractor) Create(ctx context.Context, p input.MessageInput) (r
 }
 
 func (i *messageInteractor) List(ctx context.Context, p input.MessageList) (result []*output.MessageOutput, err error) {
+	var totalCount int64
+	if totalCount, err = i.messageRepo.GetCount(ctx); err != nil {
+		return nil, err
+	}
+
+	paging := i.pagingRepo.Get(
+		int(totalCount),
+		p.Paging.Offset,
+		p.Paging.Page,
+		p.Paging.Limit,
+	)
+
 	var messages []*model.Message
-	// TODO: build query mods paging
-	if messages, err = i.messageRepository.List(
+	if messages, err = i.messageRepo.List(
 		ctx,
+		paging,
 		db.OrderBy(dbmodels.MessageColumns.CreatedAt, false),
 	); err != nil {
 		return nil, err

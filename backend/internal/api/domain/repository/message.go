@@ -7,6 +7,7 @@ import (
 )
 
 type IMessageRepository interface {
+	GetCount(ctx context.Context, queryMods ...db.Query) (int64, error)
 	List(ctx context.Context, queryMods ...db.Query) ([]*model.Message, error)
 	Create(ctx context.Context, model *model.Message) (*model.Message, error)
 }

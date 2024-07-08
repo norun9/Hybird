@@ -23,6 +23,7 @@ var inputBoundarySet = wire.NewSet(
 func InitializeRestHandler(config.DBConfig) (_ interfaces.IRestHandler) {
 	wire.Build(
 		inputBoundarySet,
+		repository.NewPaging,
 		controller.NewMessageController,
 		interfaces.GetMapRoute,
 		interfaces.NewRestHandler,
