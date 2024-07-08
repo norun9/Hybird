@@ -7,7 +7,7 @@ import (
 
 // Paging
 // https://github.com/volatiletech/sqlboiler/blob/master/queries/qm/query_mods.go
-// implementing QueryMod interface with Apply method
+// Fulfill the QueryMod interface by implementing the Apply method
 type Paging struct {
 	TotalPage  int `json:"totalPage"`
 	Offset     int `json:"offset" validate:"gte=0"`
