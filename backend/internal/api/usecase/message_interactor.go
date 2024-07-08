@@ -32,7 +32,6 @@ func NewMessageInteractor(messageRepository repository.IMessageRepository) IMess
 func (i *messageInteractor) Create(ctx context.Context, p input.MessageInput) (result *output.MessageOutput, err error) {
 	var created *model.Message
 	if created, err = i.messageRepository.Create(ctx, &model.Message{
-		ID:      0,
 		Content: p.Content,
 	}); err != nil {
 		return nil, err

@@ -8,5 +8,5 @@ import (
 
 type IMessageRepository interface {
 	List(ctx context.Context, queryMods ...db.Query) ([]*model.Message, error)
-	Create(ctx context.Context, model *model.Message) (int64, error)
+	Create(ctx context.Context, model *model.Message) (*model.Message, error)
 }

@@ -40,10 +40,11 @@ func (r *messageRepository) List(ctx context.Context, queryMods ...db.Query) (re
 	return result, nil
 }
 
-func (r *messageRepository) Create(ctx context.Context, model *model.Message) (int64, error) {
+func (r *messageRepository) Create(ctx context.Context, model *model.Message) (*model.Message, error) {
 	entity := transfer.ToMessageEntity(model)
 	if err := entity.Insert(ctx, r.dbClient.Get(ctx), boil.Infer()); err != nil {
-		return 0, errors.Wrap(err, "ErrInsert")
+		return nil, errors.Wrap(err, "ErrInsert")
 	}
-	return entity.ID, nil
+	model.CreatedAt = entity.CreatedAt
+	return model, nil
 }
