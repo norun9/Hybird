@@ -2,7 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { useFetch } from '@/hooks/useFetch'
 import { Message } from '@/types'
-import MessageInput from '@/components/ui/MessageInput'
+// import MessageInput from '@/components/ui/MessageInput'
 
 const Messages: React.FC = () => {
   const { data: messages, isLoading, isError } = useFetch<Message[]>('/v1/messages')
