@@ -1,6 +1,6 @@
-require('@babel/register')({
-  extensions: ['.js', '.jsx', '.ts', '.tsx'],
-})
+// require('@babel/register')({
+//   extensions: ['.js', '.jsx', '.ts', '.tsx'],
+// })
 
 module.exports = {
   extends: [

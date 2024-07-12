@@ -1,5 +1,4 @@
-
-export interface Messages{
-    content: string
-    createdAt: string
+export interface Messages {
+  content: string
+  createdAt: string
 }
