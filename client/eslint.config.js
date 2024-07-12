@@ -1,28 +1,27 @@
 module.exports = {
-  extends: [
-    'next/core-web-vitals',
-    'airbnb',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:jsx-a11y/recommended',
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript',
-    'prettier',
-  ],
-  plugins: ['react', 'react-hooks', 'jsx-a11y', 'import', 'prettier', '@typescript-eslint'],
-  rules: {
-    'prettier/prettier': 'error',
-    'react/react-in-jsx-scope': 'off',
-    'react/jsx-indent': ['error', 2],
-    'react/jsx-indent-props': ['error', 2],
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+  extends: ['airbnb', 'airbnb/hooks', 'airbnb-typescript', 'prettier'],
+  parserOptions: {
+    project: './tsconfig.json',
   },
-  settings: {
-    react: {
-      version: 'detect',
-    },
+  rules: {
+    // eslint-config-airbnb（eslint)
+    'spaced-comment': 'off',
+    'no-console': 'off',
+    'no-alert': 'off',
+    'arrow-body-style': 'off',
+    // eslint-config-airbnb（eslint-plugin-import)
+    'import/prefer-default-export': 'off',
+    // eslint-config-airbnb（eslint-plugin-react）
+    'react/require-default-props': 'off',
+    'react/prop-types': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
+    // eslint-config-airbnb（eslint-plugin-react-hook）
+    'react-hooks/exhaustive-deps': 'warn',
+    // eslint-config-airbnb-typescript（eslint-typescript）
+    '@typescript-eslint/naming-convention': 'off',
+    '@typescript-eslint/no-unused-expressions': ['error', { allowTernary: true }],
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 }
