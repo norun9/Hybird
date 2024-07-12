@@ -6,8 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "precommit": "lint-staged",
+    "prepare": "husky install",
     "lint": "next lint",
-    "precommit": "lint-staged"
+    "lint:fix": "eslint src/**/*.{ts,tsx} --fix",
+    "format": "prettier --write ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
     "*.{js,json,ts,tsx,css,md}": [
