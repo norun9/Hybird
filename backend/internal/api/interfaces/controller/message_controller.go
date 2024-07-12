@@ -5,8 +5,12 @@ import (
 	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/input"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/output"
-	ws "github.com/norun9/Hybird/pkg/websocket"
+	"github.com/norun9/Hybird/pkg/log"
+	myws "github.com/norun9/Hybird/pkg/websocket"
+	"go.uber.org/zap"
 )
+
+var rooms = &myws.Rooms{}
 
 type IMessageController interface {
 	List(c *gin.Context, p input.MessageList) ([]*output.MessageOutput, error)
@@ -35,19 +39,20 @@ func (mc *messageController) Create(c *gin.Context, p input.MessageInput) (*outp
 }
 
 func (mc *messageController) Send(c *gin.Context, _ interface{}) error {
-	go ws.HandleMessages()
-	conn, err := ws.Upgrader.Upgrade(c.Writer, c.Request, nil)
+	conn, err := myws.Upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
-	ws.Clients[conn] = true
+	client := &myws.Client{Ws: conn}
+	rooms.AddClient(client)
 	for {
-		t, msg, err := conn.ReadMessage()
+		_, msg, err := conn.ReadMessage()
 		if err != nil {
+			log.Logger.Error("Failed to read message", zap.Error(err))
 			break
 		}
-		ws.Broadcast <- ws.Message{Type: t, Message: msg}
+		rooms.Send(msg)
 	}
 	return nil
 }

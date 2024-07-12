@@ -1,0 +1,21 @@
+x-build-context: &BUILD_CONTEXT
+  context: "./client"
+
+x-environment: &ENVIRONMENT
+  environment:
+    - NODE_ENV=development
+
+services:
+  client:
+    container_name: "client"
+    build:
+      <<: *BUILD_CONTEXT
+      dockerfile: "../docker/dev/client/Dockerfile"
+    ports:
+      - "3100:3100"
+    <<: *ENVIRONMENT
+    volumes:
+      - ./client:/usr/src/app
+      - node-modules:/usr/src/app/node_modules
+volumes:
+  node-modules:

@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+if [ -z "$(git diff --cached --name-only client)" ]; then
+  echo "[skipping] client - no changes detected"
+else
+  cd client
+  yarn lint-staged --relative
+  cd ..
+fi

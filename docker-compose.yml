@@ -5,7 +5,7 @@ services:
     container_name: "air"
     build:
       context: "./backend"
-      dockerfile: "../dev/air/Dockerfile"
+      dockerfile: "../docker/dev/air/Dockerfile"
     command: "air -c .air.toml"
     working_dir: "/app/go/dev"
     ports:
@@ -18,8 +18,8 @@ services:
     container_name: "mysql"
     platform: "linux/amd64"
     build:
-      context: "dev/db"
-      dockerfile: "Dockerfile"
+      context: "."
+      dockerfile: "docker/dev/db/Dockerfile"
     cap_add:
       - SYS_NICE
     command: |

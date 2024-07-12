@@ -156,7 +156,7 @@ func (m *mysqlTester) makeOptionFile() error {
 		return errors.Wrap(err, "could not stat m.host")
 	}
 
-	fmt.Fprintln(tmp, "[client]")
+	fmt.Fprintln(tmp, "[client2]")
 	fmt.Fprintf(tmp, "host=%s\n", m.host)
 	fmt.Fprintf(tmp, "port=%d\n", m.port)
 	fmt.Fprintf(tmp, "user=%s\n", m.user)

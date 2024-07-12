@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS messages (
     created_at            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
-    );
+);
 
 -- +goose Down
 -- SQL in this section is executed when the migrations is rolled back.
