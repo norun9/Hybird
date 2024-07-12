@@ -10,7 +10,7 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,json,ts,tsx,css,md}": ["prettier --write", "git add"]
+    "*.{js,json,ts,tsx,css,md}": ["prettier --write", "eslint --fix", "git add"]
   },
   "dependencies": {
     "axios": "^1.7.2",
