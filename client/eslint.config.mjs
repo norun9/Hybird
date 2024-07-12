@@ -22,6 +22,7 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.es2021,
+        ...globals.node,
       },
       ecmaVersion: "latest",
       sourceType: "module",
@@ -40,43 +41,10 @@ export default [
       "unused-imports": pluginUnusedImport,
     },
     rules: {
+      'no-undef': 'error',
       "no-unused-vars": "off",
       "unused-imports/no-unused-imports": "error",
       "react/react-in-jsx-scope": "off",
-      "import/order": [
-        "error",
-        {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            ["parent", "sibling"],
-            "object",
-            "type",
-            "index",
-          ],
-          "newlines-between": "never",
-          pathGroupsExcludedImportTypes: ["builtin"],
-          alphabetize: { order: "asc", caseInsensitive: true },
-          pathGroups: [
-            {
-              pattern: "react**",
-              group: "external",
-              position: "before",
-            },
-            {
-              pattern: "{@/components/**,@/pages/**}",
-              group: "internal",
-              position: "before",
-            },
-            {
-              pattern: "./**.module.css",
-              group: "index",
-              position: "after",
-            },
-          ],
-        },
-      ],
     },
   },
 ];

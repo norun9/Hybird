@@ -1,7 +1,7 @@
 'use client'
+import Messages from '@/components/layout/Messages'
 import Rooms from '@/components/layout/Rooms'
 import SideBar from '@/components/layout/SideBar'
-import Messages from '@/components/layout/Messages'
 import { NextPage } from 'next'
 
 const Home: NextPage = () => {

@@ -2,10 +2,10 @@ import React from 'react'
 import Image from 'next/image'
 import { useFetch } from '@/hooks/useFetch'
 import { Message } from '@/types'
-// import MessageInput from '@/components/ui/MessageInput'
+import MessageInput from '@/components/ui/MessageInput'
 
 const Messages: React.FC = () => {
-  const { data: messages, isLoading, isError } = useFetch<Message[]>('/v1/messages')
+  const { data: messages } = useFetch<Message[]>('/v1/messages')
 
   return (
     <div className='flex-1 flex flex-col bg-gray-700 overflow-hidden relative'>
@@ -21,7 +21,7 @@ const Messages: React.FC = () => {
       {/* Chat messages */}
       <div className='px-6 py-4 flex-1 overflow-y-scroll'>
         {/* A message */}
-        {messages?.map((message, index) => (
+        {messages?.map((message) => (
           <div className='border-b border-gray-600 py-3 flex items-start mb-4 text-sm'>
             <Image src='/assets/icon/user/free.svg' height={40} width={40} alt='free_icon' className='mr-3' />
             <div className='flex-1 overflow-hidden'>
@@ -33,6 +33,7 @@ const Messages: React.FC = () => {
             </div>
           </div>
         ))}
+
         <MessageInput />
       </div>
     </div>
