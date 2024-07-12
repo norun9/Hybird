@@ -1,21 +1,21 @@
-import eslint from "@eslint/js";
-import typeScriptESLintParser from "@typescript-eslint/parser";
-import eslintConfigPrettier from "eslint-config-prettier";
-import pluginImport from "eslint-plugin-import";
-import pluginReact from "eslint-plugin-react";
-import pluginUnusedImport from "eslint-plugin-unused-imports";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import eslint from '@eslint/js'
+import typeScriptESLintParser from '@typescript-eslint/parser'
+import eslintConfigPrettier from 'eslint-config-prettier'
+import pluginImport from 'eslint-plugin-import'
+import pluginReact from 'eslint-plugin-react'
+import pluginUnusedImport from 'eslint-plugin-unused-imports'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
 export default [
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   eslintConfigPrettier,
   {
-    ignores: ["**/build/**"],
+    ignores: ['**/build/**'],
   },
   {
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ['**/*.ts', '**/*.tsx'],
   },
   {
     languageOptions: {
@@ -24,13 +24,13 @@ export default [
         ...globals.es2021,
         ...globals.node,
       },
-      ecmaVersion: "latest",
-      sourceType: "module",
+      ecmaVersion: 'latest',
+      sourceType: 'module',
       parser: typeScriptESLintParser,
     },
     settings: {
       react: {
-        version: "18.2.0",
+        version: '18.2.0',
       },
     },
   },
@@ -38,13 +38,13 @@ export default [
     plugins: {
       react: pluginReact,
       import: pluginImport,
-      "unused-imports": pluginUnusedImport,
+      'unused-imports': pluginUnusedImport,
     },
     rules: {
       'no-undef': 'error',
-      "no-unused-vars": "off",
-      "unused-imports/no-unused-imports": "error",
-      "react/react-in-jsx-scope": "off",
+      'no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'react/react-in-jsx-scope': 'off',
     },
   },
-];
+]
