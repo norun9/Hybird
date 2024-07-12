@@ -19,4 +19,4 @@ COPY --from=build /go/bin/fresh /usr/local/bin/fresh
 COPY --from=build /go/bin/goose /usr/local/bin/goose
 
 # 最小限のパッケージをインストール
-RUN apk add --no-cache bash mysql-client
+RUN apk add --no-cache bash mysql-client2

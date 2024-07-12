@@ -69,15 +69,21 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 	if 1 < funcType.NumIn() {
 		// the second element of argument is input
 		inputType := funcType.In(1)
-		if inputType.Kind() != reflect.Slice {
+		if inputType.Kind() != reflect.Interface {
 			if err = validate.Struct(params); err != nil {
 				// input struct validation failed
 				log.Logger.Error("Validation struct error", zap.Error(err))
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
+			args = append(args, reflect.Indirect(reflect.ValueOf(params)))
+		} else {
+			paramsValue := reflect.ValueOf(params)
+			if paramsValue.Kind() == reflect.Ptr && paramsValue.IsNil() {
+				paramsValue = reflect.New(inputType.Elem())
+			}
+			args = append(args, reflect.Indirect(reflect.ValueOf(paramsValue)))
 		}
-		args = append(args, reflect.Indirect(reflect.ValueOf(params)))
 	}
 
 	fv := reflect.ValueOf(f)
@@ -139,6 +145,7 @@ func GetPagingInfo(r *http.Request) (paging model.Paging) {
 	if err != nil {
 		paramPage = 1
 	}
+
 	return model.Paging{
 		Offset: paramOffset,
 		Limit:  paramLimit,
