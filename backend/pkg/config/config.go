@@ -13,8 +13,16 @@ type Config struct {
 }
 
 type AppConfig struct {
-	DBConfig     DBConfig     `mapstructure:"db"`
-	ServerConfig ServerConfig `mapstructure:"server"`
+	DBConfig   DBConfig   `mapstructure:"db"`
+	HTTPConfig HTTPConfig `mapstructure:"http"`
+}
+
+type HTTPConfig struct {
+	CORSConfig CORSConfig `mapstructure:"cors" validate:"required"`
+}
+
+type CORSConfig struct {
+	AllowedOrigins []string `mapstructure:"allowed_origins" validate:"required"`
 }
 
 type DBConfig struct {
@@ -22,10 +30,6 @@ type DBConfig struct {
 	User string `mapstructure:"user" validate:"required"`
 	Pass string `mapstructure:"pass" validate:"required"`
 	Name string `mapstructure:"name" validate:"required"`
-}
-
-type ServerConfig struct {
-	Port string `mapstructure:"port" validate:"required"`
 }
 
 const AppName = "HYBIRD"

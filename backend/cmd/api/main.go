@@ -47,16 +47,16 @@ func main() {
 	// NOTE:using code: gin.SetMode(gin.ReleaseMode) in production
 	gin.SetMode(gin.DebugMode)
 
+	c := config.Prepare()
+
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://sample.com"}, // TODO:FIX
+		AllowOrigins:     c.HTTPConfig.CORSConfig.AllowedOrigins,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposeHeaders:    []string{"Link"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
-
-	c := config.Prepare()
 
 	handler := injector.InitializeRestHandler(c.DBConfig)
 	handler.GetHealthCheckRoute(r)

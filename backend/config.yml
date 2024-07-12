@@ -1,8 +1,10 @@
 env:
   name: "dev"
 dev:
-  server:
-    port: "3000"
+  http:
+    cors:
+      allowed_origins:
+        - "http://localhost:3100"
   db:
     host: "mysql"
     user: "hybird"

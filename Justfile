@@ -13,5 +13,8 @@ migrate_down:
 client:
   docker compose -f docker-compose-client.yml up
 
+client-build:
+  docker compose -f docker-compose-client.yml up --build
+
 air:
   docker compose up
