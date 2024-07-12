@@ -1,12 +1,22 @@
 'use client'
-import { useFetch } from '@/hooks/useFetch'
-import { Messages } from '@/types'
+import Rooms from '@/components/layout/Rooms'
+import SideBar from '@/components/layout/SideBar'
+import Messages from '@/components/layout/Messages'
+import { NextPage } from 'next'
 
-const Home = () => {
-  const { data: messages, isLoading, isError } = useFetch<Messages[]>('/v1/messages')
-  console.log(messages)
-
-  return <div>Hello, World</div>
+const Home: NextPage = () => {
+  return (
+    <>
+      <div className='font-sans antialiased h-screen flex'>
+        {/* Sidebar / Account Info etc. */}
+        <SideBar />
+        {/* Room List */}
+        <Rooms />
+        {/* Chat content */}
+        <Messages />
+      </div>
+    </>
+  )
 }
 
 export default Home

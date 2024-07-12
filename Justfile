@@ -10,11 +10,8 @@ migrate_down:
 		-v ${PWD}/db/migrations:/app/db/migrations hybird/goose \
 		goose -dir=db/migrations mysql "hybird:test@/testdb" down
 
-client:
-  docker compose -f docker-compose-client.yml up
+client build="":
+  docker-compose -f docker-compose-client.yml up {{ build }}
 
-client-build:
-  docker compose -f docker-compose-client.yml up --build
-
-air:
-  docker compose up
+air build="":
+  docker-compose up {{ build }}

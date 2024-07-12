@@ -3,8 +3,8 @@ import Link from 'next/link'
 
 const HeaderComponent: React.FC = () => {
   return (
-    <header className='bg-blue-500 p-4 text-white'>
-      <nav className='flex justify-between'>
+    <header className='bg-gray-900 p-5 h-20 text-white'>
+      <nav className='flex items-center h-full'>
         <div className='text-xl font-bold'>
           <Link href='/'>HyBird</Link>
         </div>

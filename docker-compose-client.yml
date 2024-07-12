@@ -6,7 +6,7 @@ x-environment: &ENVIRONMENT
     - NODE_ENV=development
 
 services:
-  server:
+  client:
     container_name: "client"
     build:
       <<: *BUILD_CONTEXT
