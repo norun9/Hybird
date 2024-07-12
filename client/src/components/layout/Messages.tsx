@@ -14,7 +14,7 @@ const Messages: React.FC = () => {
         <div className='flex flex-col'>
           <h3 className='text-white mb-1 font-bold text-xl text-gray-100'>
             {/*<span className='text-gray-400'>#</span> general*/}
-            General
+            General Information
           </h3>
         </div>
       </div>
