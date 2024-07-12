@@ -1,7 +1,3 @@
-// require('@babel/register')({
-//   extensions: ['.js', '.jsx', '.ts', '.tsx'],
-// })
-
 module.exports = {
   extends: [
     'next/core-web-vitals',
