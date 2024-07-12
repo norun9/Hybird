@@ -8,20 +8,16 @@
     "start": "next start",
     "precommit": "lint-staged",
     "prepare": "husky install",
-    "lint": "next lint",
-    "lint:fix": "eslint src/**/*.{ts,tsx} --fix",
-    "format": "prettier --write ."
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "format": "prettier --write .",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint:fix": "eslint src/**/*.{ts,tsx} --fix"
   },
   "lint-staged": {
-    "*.{js,json,ts,tsx,css,md}": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
+    "*.{ts,tsx}": [
+      "yarn lint",
+      "yarn format",
+      "yarn lint:fix"
     ]
   },
   "dependencies": {

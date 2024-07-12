@@ -5,6 +5,6 @@ if [ -z "$(git diff --cached --name-only client)" ]; then
   echo "[skipping] client - no changes detected"
 else
   cd client
-  yarn lint-staged --relative
+  yarn check-types --relative
   cd ..
 fi
