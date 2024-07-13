@@ -44,7 +44,10 @@ const MessageInput: React.FC<Props> = React.memo(({ sendWsMessage }) => {
 
   const onSubmit: SubmitHandler<MessageFormValues> = async (data: MessageFormValues) => {
     try {
-      sendWsMessage(data.content)
+      // Timestamp for checking message duplicates
+      const timestamp = Date.now()
+      const content = `${data.content}_${timestamp}`
+      sendWsMessage(content)
       const payload: IMessageReq = { content: data.content }
       await postData(payload)
       setValue(formFieldName, '')

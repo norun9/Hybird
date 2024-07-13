@@ -1,41 +1,35 @@
 import { useEffect, useRef, useState } from 'react'
 import ReconnectingWebSocket from 'reconnecting-websocket'
-import { IMessageRes } from '@/types/api/response'
 import { getFormattedCurrentTime } from '@/utils/time'
-
-let connectionCnt = 0
+import { IMessage } from '@/types/components'
 
 export const useWebSocket = (url: string | undefined) => {
   const socketRef = useRef<ReconnectingWebSocket | null>(null)
-  const [messages, setMessages] = useState<IMessageRes[]>([])
-  const initializedRef = useRef<boolean>(false)
+  const [messages, setMessages] = useState<IMessage[]>([])
 
   useEffect(() => {
     if (!url) {
       throw new Error('No websocket URL provided')
     }
 
-    const ws = new ReconnectingWebSocket(url)
+    const ws: ReconnectingWebSocket = new ReconnectingWebSocket(url)
     socketRef.current = ws
-    initializedRef.current = true
 
-    ws.onopen = () => {
-      connectionCnt++
-      console.log('WebSocket connection opened')
-    }
-
-    const onMessage = (event: MessageEvent<string>) => {
-      console.log('number of WebSocket connections:', connectionCnt)
-      const newMessage = {
-        content: event.data,
+    ws.onmessage = (event: MessageEvent<string>) => {
+      const dataArr = event.data.split('_')
+      const content = dataArr[0]
+      const timestamp = Number(dataArr[1])
+      const newMessage: IMessage = {
+        timestamp: timestamp,
+        content: content,
         createdAt: getFormattedCurrentTime(),
       }
-      setMessages((prevMessages) => [...prevMessages, newMessage])
-    }
-
-    if (initializedRef.current) {
-      console.log('WebSocket initialized')
-      ws.addEventListener('message', onMessage)
+      setMessages((prevMessages) => {
+        if (!prevMessages.some((msg) => msg.content === newMessage.content && msg.timestamp === newMessage.timestamp)) {
+          return [...prevMessages, newMessage]
+        }
+        return prevMessages
+      })
     }
 
     ws.onerror = (error) => {
@@ -43,21 +37,19 @@ export const useWebSocket = (url: string | undefined) => {
     }
 
     ws.onclose = () => {
-      connectionCnt--
-      console.log('WebSocket connection closed. Current connection count:', connectionCnt)
       socketRef.current = null
-      initializedRef.current = false
-      ws.removeEventListener('message', onMessage)
+      ws.onmessage = null
+      ws.onerror = null
+      ws.onclose = null
     }
 
     return () => {
       ws.onmessage = null
       ws.onerror = null
       ws.onclose = null
-      ws.removeEventListener('message', onMessage)
       ws.close()
     }
-  }, [])
+  }, [url])
 
   return { socketRef, messages, setMessages }
 }

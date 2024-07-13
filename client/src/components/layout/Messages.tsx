@@ -32,6 +32,8 @@ const Messages: React.FC = React.memo(() => {
     }
   }, [fetchedMessages])
 
+  console.log(messages)
+
   const sendWsMessage = (input: string) => {
     const ws = socketRef.current
     if (ws && ws.readyState === WebSocket.OPEN) {
