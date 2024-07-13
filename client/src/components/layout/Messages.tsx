@@ -80,7 +80,7 @@ const Messages: React.FC = React.memo(() => {
                 <div
                   ref={isLastEvent ? lastEventRef : null}
                   key={index}
-                  className='hover:bg-gray-47 px-6 pt-3 pb-7 flex items-start text-sm'>
+                  className='hover:bg-gray-48 px-6 py-5 flex items-start text-sm'>
                   <Image src='/assets/icon/user/free.svg' height={40} width={40} alt='free_icon' className='mr-3' />
                   <div className='flex-1 overflow-hidden'>
                     <div className='flex items-center'>
