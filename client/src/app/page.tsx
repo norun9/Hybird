@@ -12,7 +12,7 @@ const Home: NextPage = () => {
         <SideBar />
         {/* Room List */}
         <Rooms />
-        {/* Chat content */}
+        {/* Chat Content */}
         <Messages />
       </div>
     </>

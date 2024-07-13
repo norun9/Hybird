@@ -21,7 +21,11 @@
       "@/*": ["./src/*"],
       "@/hooks": ["./src/hooks/_index.ts"],
       "@/services": ["./src/services/_index.ts"],
-      "@/types": ["./src/types/_index.ts"]
+      "@/types/api/request": ["./src/types/api/request/_index.ts"],
+      "@/types/api/response": ["./src/types/api/response/_index.ts"],
+      "@/types/components/forms": ["./src/types/components/forms/_index.ts"],
+      "@/types/components": ["./src/types/components/_index.ts"],
+      "@/utils/*": ["./src/utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
