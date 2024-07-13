@@ -1,4 +1,4 @@
-export interface Message {
+export interface IMessage {
   content: string
   createdAt: string
 }

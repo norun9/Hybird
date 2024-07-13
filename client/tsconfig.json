@@ -19,7 +19,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@/hooks": ["./src/hooks/*"],
+      "@/hooks": ["./src/hooks/_index.ts"],
       "@/services": ["./src/services/_index.ts"],
       "@/types": ["./src/types/_index.ts"]
     }
