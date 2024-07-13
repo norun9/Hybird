@@ -13,6 +13,7 @@ const config: Config = {
         'gray-56': 'rgb(56, 58, 66)',
         'gray-50': 'rgb(50, 51, 56)',
         'gray-43': 'rgb(43, 45, 49)',
+        'gray-47': 'rgb(47, 48, 53)',
         'gray-30': 'rgb(30, 31, 34)',
         'gray-light': 'rgb(220, 222, 225)',
         'gray-border-1': 'rgb(54, 54, 60)',
