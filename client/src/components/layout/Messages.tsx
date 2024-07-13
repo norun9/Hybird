@@ -12,13 +12,13 @@ const Messages: React.FC = React.memo(() => {
   const groupMessagesByDate = (messages: IMessageRes[] | undefined): Record<string, IMessageRes[]> => {
     return (messages || []).reduce(
       (acc: Record<string, IMessageRes[]>, message: IMessageRes) => {
-        const [date, time, timeDivision] = message.createdAt.split(' ')
+        const [date, time, ampm] = message.createdAt.split(' ')
         if (!acc[date]) {
           acc[date] = []
         }
         acc[date].push({
           ...message,
-          createdAt: time + ' ' + timeDivision,
+          createdAt: `${time} ${ampm}`,
         })
         return acc
       },
@@ -31,8 +31,6 @@ const Messages: React.FC = React.memo(() => {
       setMessages(fetchedMessages)
     }
   }, [fetchedMessages])
-
-  console.log(messages)
 
   const sendWsMessage = (input: string) => {
     const ws = socketRef.current

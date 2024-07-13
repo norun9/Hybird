@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/input"
@@ -49,7 +48,6 @@ func (mc *messageController) Receive(c *gin.Context, _ interface{}) error {
 	rooms.AddClient(client)
 	for {
 		_, msg, err := conn.ReadMessage()
-		log.Logger.Info(fmt.Sprintf("Message:%s", msg))
 		if err != nil {
 			log.Logger.Error("Failed to read message", zap.Error(err))
 			break
