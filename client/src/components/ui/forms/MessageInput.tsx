@@ -55,7 +55,7 @@ const MessageInput: React.FC<Props> = ({ sendWsMessage }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='bg-gray-700 flex-none pb-5 px-4'>
+      <div className='bg-gray-50 flex-none pb-5 px-4'>
         <div className='flex rounded-lg overflow-hidden'>
           <input
             {...register(formFieldName, {
@@ -64,12 +64,12 @@ const MessageInput: React.FC<Props> = ({ sendWsMessage }) => {
             })}
             type='text'
             maxLength={50}
-            className='w-full px-4 bg-gray-600 text-white'
+            className='w-full px-4 text-gray-light bg-gray-56'
           />
           <button
             type='submit'
             disabled={!!errors.content}
-            className='border-l border-gray-600 w-[4rem] flex flex-row items-center justify-center text-3xl text-grey border-r-4 border-gray-600 bg-gray-600 p-2'>
+            className='bg-gray-56 border-l border-gray-56 w-[4rem] flex flex-row items-center justify-center text-3xl text-gray-light border-r-4 border-gray-56 p-2'>
             {valid && !errors.content ? (
               <Image
                 src='/assets/icon/message/send_enabled.svg'
