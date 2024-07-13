@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/input"
@@ -14,7 +15,7 @@ var rooms = &myws.Rooms{}
 
 type IMessageController interface {
 	List(c *gin.Context, p input.MessageList) ([]*output.MessageOutput, error)
-	Send(c *gin.Context, _ interface{}) error
+	Receive(c *gin.Context, _ interface{}) error
 	Create(c *gin.Context, p input.MessageInput) (*output.MessageOutput, error)
 }
 
@@ -38,7 +39,7 @@ func (mc *messageController) Create(c *gin.Context, p input.MessageInput) (*outp
 	return mc.messageIB.Create(ctx, p)
 }
 
-func (mc *messageController) Send(c *gin.Context, _ interface{}) error {
+func (mc *messageController) Receive(c *gin.Context, _ interface{}) error {
 	conn, err := myws.Upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		return err
@@ -48,6 +49,7 @@ func (mc *messageController) Send(c *gin.Context, _ interface{}) error {
 	rooms.AddClient(client)
 	for {
 		_, msg, err := conn.ReadMessage()
+		log.Logger.Info(fmt.Sprintf("Message:%s", msg))
 		if err != nil {
 			log.Logger.Error("Failed to read message", zap.Error(err))
 			break
