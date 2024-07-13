@@ -10,7 +10,7 @@ interface Props {
   sendWsMessage: (input: string) => void
 }
 
-const MessageInput: React.FC<Props> = ({ sendWsMessage }) => {
+const MessageInput: React.FC<Props> = React.memo(({ sendWsMessage }) => {
   const [valid, setValid] = useState<boolean>(false)
   const formFieldName = 'content'
   const { postData } = usePost<IMessageReq, IMessageRes>('/v1/messages')
@@ -90,6 +90,6 @@ const MessageInput: React.FC<Props> = ({ sendWsMessage }) => {
       </div>
     </form>
   )
-}
+})
 
 export default MessageInput

@@ -8,7 +8,7 @@ import { getFormattedCurrentTime } from '@/utils/time'
 
 const Messages: React.FC = React.memo(() => {
   const { data: fetchedMessages } = useFetch<IMessageRes[]>('/v1/messages')
-  const socketRef = useRef<ReconnectingWebSocket>()
+  const socketRef = useRef<ReconnectingWebSocket | null>(null)
   const [messages, setMessages] = useState<IMessageRes[]>([])
 
   const groupMessagesByDate = (messages: IMessageRes[] | undefined): Record<string, IMessageRes[]> => {
@@ -35,29 +35,47 @@ const Messages: React.FC = React.memo(() => {
   }, [fetchedMessages])
 
   useEffect(() => {
-    socketRef.current = new ReconnectingWebSocket(process.env.NEXT_PUBLIC_WEB_SOCKET_URL ?? '')
-
-    const onMessage = (event: MessageEvent<string>) => {
-      const newMessage: IMessageRes = {
-        content: event.data,
-        createdAt: getFormattedCurrentTime(),
+    const initWebSocket = () => {
+      const webSocketURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL
+      if (!webSocketURL) {
+        throw new Error('No websocket URL provided')
       }
-      setMessages((prevMessages: IMessageRes[]) => [...prevMessages, newMessage])
+      const ws: ReconnectingWebSocket = new ReconnectingWebSocket(webSocketURL)
+      socketRef.current = ws
+
+      ws.onopen = () => {
+        console.log('WebSocket connection opened')
+      }
+
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error)
+      }
+
+      ws.onclose = () => {
+        console.log('WebSocket connection closed')
+      }
+
+      const onMessage = (event: MessageEvent<string>) => {
+        const newMessage: IMessageRes = {
+          content: event.data,
+          createdAt: getFormattedCurrentTime(),
+        }
+        setMessages((prevMessages) => [...prevMessages, newMessage])
+      }
+
+      ws.addEventListener('message', onMessage)
+
+      return () => {
+        ws.removeEventListener('message', onMessage)
+        ws.close()
+      }
     }
 
-    socketRef.current.addEventListener('message', onMessage)
-
-    return (): void => {
-      if (socketRef.current == null) {
-        return
-      }
-      socketRef.current.close()
-      socketRef.current.removeEventListener('message', onMessage)
-    }
+    return initWebSocket()
   }, [])
 
   const sendWsMessage = (input: string) => {
-    const ws: ReconnectingWebSocket | undefined = socketRef.current
+    const ws = socketRef.current
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(input)
     } else {
@@ -69,7 +87,6 @@ const Messages: React.FC = React.memo(() => {
 
   return (
     <div className='flex-1 flex flex-col bg-gray-50 overflow-hidden'>
-      {/* Top bar */}
       <div className='border-b border-gray-border-3 flex px-6 py-2 items-center flex-none shadow-xl'>
         <div className='flex flex-col justify-center h-9'>
           <h3 className='text-white font-bold text-xl text-gray-100'>
@@ -87,12 +104,12 @@ const Messages: React.FC = React.memo(() => {
               <span className='mx-2 text-xs font-bold text-gray-400'>{date}</span>
               <div className='flex-grow border-t border-gray-border-3'></div>
             </div>
-            {msgs.map((msg, index) => (
+            {msgs.map((msg: IMessageRes, index: number) => (
               <div key={index} className='pt-3 pb-7 flex items-start text-sm hover:bg-gray-750'>
                 <Image src='/assets/icon/user/free.svg' height={40} width={40} alt='free_icon' className='mr-3' />
                 <div className='flex-1 overflow-hidden'>
                   <div className='flex items-center'>
-                    <span className='font-bold text-orange-400 cursor-pointer'>David</span>
+                    <span className='font-bold text-orange-400 cursor-pointer'>User</span>
                     <span className='font-bold text-gray-400 text-xs ml-1'>{msg.createdAt}</span>
                   </div>
                   <p className='text-gray-light leading-normal'>{msg.content}</p>
@@ -102,7 +119,6 @@ const Messages: React.FC = React.memo(() => {
           </div>
         ))}
       </div>
-      {/* Message Input */}
       <MessageInput sendWsMessage={sendWsMessage} />
     </div>
   )

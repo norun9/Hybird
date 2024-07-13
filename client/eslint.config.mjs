@@ -12,14 +12,7 @@ export default [
   ...tseslint.configs.recommended,
   eslintConfigPrettier,
   {
-    ignores: [
-      '**/build/**',
-      '**/dist/**',
-      '**/node_modules/**',
-      '**/public/**',
-      '**/*.log',
-      '.env',
-    ],
+    ignores: ['**/build/**', '**/dist/**', '**/node_modules/**', '**/public/**', '**/*.log', '.env'],
   },
   {
     files: ['**/*.ts', '**/*.tsx'],
