@@ -1,15 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
-import { useFetch } from '@/hooks'
+import { useFetch, useWebSocket } from '@/hooks'
 import { IMessageRes } from '@/types/api/response'
 import MessageInput from '@/components/ui/forms/MessageInput'
-import ReconnectingWebSocket from 'reconnecting-websocket'
-import { getFormattedCurrentTime } from '@/utils/time'
 
 const Messages: React.FC = React.memo(() => {
   const { data: fetchedMessages } = useFetch<IMessageRes[]>('/v1/messages')
-  const socketRef = useRef<ReconnectingWebSocket | null>(null)
-  const [messages, setMessages] = useState<IMessageRes[]>([])
+  const webSocketURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL
+  const { socketRef, messages, setMessages } = useWebSocket(webSocketURL)
 
   const groupMessagesByDate = (messages: IMessageRes[] | undefined): Record<string, IMessageRes[]> => {
     return (messages || []).reduce(
@@ -33,46 +31,6 @@ const Messages: React.FC = React.memo(() => {
       setMessages(fetchedMessages)
     }
   }, [fetchedMessages])
-
-  useEffect(() => {
-    const initWebSocket = () => {
-      const webSocketURL = process.env.NEXT_PUBLIC_WEB_SOCKET_URL
-      if (!webSocketURL) {
-        throw new Error('No websocket URL provided')
-      }
-      const ws: ReconnectingWebSocket = new ReconnectingWebSocket(webSocketURL)
-      socketRef.current = ws
-
-      ws.onopen = () => {
-        console.log('WebSocket connection opened')
-      }
-
-      ws.onerror = (error) => {
-        console.error('WebSocket error:', error)
-      }
-
-      ws.onclose = () => {
-        console.log('WebSocket connection closed')
-      }
-
-      const onMessage = (event: MessageEvent<string>) => {
-        const newMessage: IMessageRes = {
-          content: event.data,
-          createdAt: getFormattedCurrentTime(),
-        }
-        setMessages((prevMessages) => [...prevMessages, newMessage])
-      }
-
-      ws.addEventListener('message', onMessage)
-
-      return () => {
-        ws.removeEventListener('message', onMessage)
-        ws.close()
-      }
-    }
-
-    return initWebSocket()
-  }, [])
 
   const sendWsMessage = (input: string) => {
     const ws = socketRef.current
