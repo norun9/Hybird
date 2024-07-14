@@ -3,11 +3,14 @@ module github.com/norun9/Hybird
 go 1.22
 
 require (
+	github.com/aws/aws-lambda-go v1.47.0
+	github.com/awslabs/aws-lambda-go-api-proxy v0.16.2
 	github.com/cockroachdb/errors v1.11.3
 	github.com/friendsofgo/errors v0.9.2
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-contrib/zap v1.1.3
 	github.com/gin-gonic/gin v1.10.0
+	github.com/go-playground/validator/v10 v10.22.0
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/google/wire v0.6.0
 	github.com/gorilla/websocket v1.5.3
@@ -33,7 +36,6 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/go-playground/validator/v10 v10.22.0 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect

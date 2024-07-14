@@ -8,13 +8,18 @@ import (
 )
 
 type Config struct {
-	//Prd AppConfig `mapstructure:"prd"`
+	Prd AppConfig `mapstructure:"prd"`
 	Dev AppConfig `mapstructure:"dev"`
 }
 
 type AppConfig struct {
 	DBConfig   DBConfig   `mapstructure:"db"`
 	HTTPConfig HTTPConfig `mapstructure:"http"`
+	GinConfig  GinConfig  `mapstructure:"gin"`
+}
+
+type GinConfig struct {
+	Mode string `mapstructure:"mode" validate:"required"`
 }
 
 type HTTPConfig struct {
@@ -63,7 +68,8 @@ func Prepare() AppConfig {
 	switch env {
 	case "dev":
 		appConfig = c.Dev
-		// TODO: Prd
+	case "prd":
+		appConfig = c.Prd
 	}
 	return appConfig
 }
