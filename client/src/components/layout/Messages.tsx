@@ -67,15 +67,15 @@ const Messages: React.FC = React.memo(() => {
       </div>
       {/* Chat messages */}
       <div className='flex-1 overflow-y-auto py-4'>
-        {Object.entries(groupedMessages).map(([date, msgs], dateIndex, dateArray) => (
+        {Object.entries(groupedMessages).map(([date, msgRes], dateIndex, objArray) => (
           <div key={date}>
             <div className='flex items-center w-full mb-1'>
               <div className='flex-grow border-t border-gray-border-3'></div>
               <span className='mx-2 text-xs font-bold text-gray-400'>{date}</span>
               <div className='flex-grow border-t border-gray-border-3'></div>
             </div>
-            {msgs.map((msg: IMessageRes, index: number) => {
-              const isLastEvent: boolean = dateIndex === dateArray.length - 1 && index === msgs.length - 1
+            {msgRes.map((msg: IMessageRes, index: number) => {
+              const isLastEvent: boolean = dateIndex === objArray.length - 1 && index === msgRes.length - 1
               return (
                 <div
                   ref={isLastEvent ? lastEventRef : null}
