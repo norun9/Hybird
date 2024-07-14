@@ -29,14 +29,14 @@ const MessageInput: React.FC<Props> = React.memo(({ sendWsMessage }) => {
   })
 
   useEffect(() => {
-    const validate = async () => {
+    const formValidate = async () => {
       const result = await trigger(formFieldName)
       setValid(result)
     }
     ;(async () => {
-      await validate() // initial validation
+      await formValidate() // initial validation
       const subscription = watch(() => {
-        validate()
+        formValidate()
       })
       return () => subscription.unsubscribe()
     })()

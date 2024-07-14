@@ -15,6 +15,10 @@ export const useWebSocket = (url: string | undefined) => {
     const ws: ReconnectingWebSocket = new ReconnectingWebSocket(url)
     socketRef.current = ws
 
+    ws.onopen = () => {
+      console.log('Websocket opened')
+    }
+
     ws.onmessage = (event: MessageEvent<string>) => {
       const dataArr = event.data.split('_')
       const content = dataArr[0]
@@ -41,12 +45,14 @@ export const useWebSocket = (url: string | undefined) => {
       ws.onmessage = null
       ws.onerror = null
       ws.onclose = null
+      ws.onopen = null
     }
 
     return () => {
       ws.onmessage = null
       ws.onerror = null
       ws.onclose = null
+      ws.onopen = null
       ws.close()
     }
   }, [url])

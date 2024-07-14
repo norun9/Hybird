@@ -6,16 +6,14 @@ import { NextPage } from 'next'
 
 const Home: NextPage = () => {
   return (
-    <>
-      <div className='font-sans antialiased h-screen flex'>
-        {/* Sidebar / Account Info etc. */}
-        <SideBar />
-        {/* Room List */}
-        <Rooms />
-        {/* Chat Content */}
-        <Messages />
-      </div>
-    </>
+    <div className='font-sans antialiased h-screen flex'>
+      {/* Sidebar / Account Info etc. */}
+      <SideBar />
+      {/* Room List */}
+      <Rooms />
+      {/* Chat Content */}
+      <Messages />
+    </div>
   )
 }
 

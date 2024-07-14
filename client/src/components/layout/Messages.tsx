@@ -66,21 +66,21 @@ const Messages: React.FC = React.memo(() => {
         </div>
       </div>
       {/* Chat messages */}
-      <div className='flex-1 overflow-y-auto px-6 py-4'>
-        {Object.entries(groupedMessages).map(([date, msgs], dateIndex, dateArray) => (
+      <div className='flex-1 overflow-y-auto py-4'>
+        {Object.entries(groupedMessages).map(([date, msgRes], dateIndex, objArray) => (
           <div key={date}>
-            <div className='flex items-center w-full'>
+            <div className='flex items-center w-full mb-1'>
               <div className='flex-grow border-t border-gray-border-3'></div>
               <span className='mx-2 text-xs font-bold text-gray-400'>{date}</span>
               <div className='flex-grow border-t border-gray-border-3'></div>
             </div>
-            {msgs.map((msg: IMessageRes, index: number) => {
-              const isLastEvent: boolean = dateIndex === dateArray.length - 1 && index === msgs.length - 1
+            {msgRes.map((msg: IMessageRes, index: number) => {
+              const isLastEvent: boolean = dateIndex === objArray.length - 1 && index === msgRes.length - 1
               return (
                 <div
                   ref={isLastEvent ? lastEventRef : null}
                   key={index}
-                  className='pt-3 pb-7 flex items-start text-sm hover:bg-gray-750'>
+                  className='hover:bg-gray-48 px-6 py-5 flex items-start text-sm'>
                   <Image src='/assets/icon/user/free.svg' height={40} width={40} alt='free_icon' className='mr-3' />
                   <div className='flex-1 overflow-hidden'>
                     <div className='flex items-center'>
