@@ -2,8 +2,6 @@ env:
   name:
 
 dev:
-  gin:
-    mode: "debug"
   http:
     cors:
       allowed_origins:
@@ -14,8 +12,6 @@ dev:
     pass: "test"
     name: "testdb"
 prd:
-  gin:
-    mode: "release"
   http:
     cors:
       allowed_origins:

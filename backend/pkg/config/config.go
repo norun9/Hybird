@@ -17,11 +17,6 @@ type Config struct {
 type AppConfig struct {
 	DBConfig   DBConfig   `mapstructure:"db"`
 	HTTPConfig HTTPConfig `mapstructure:"http"`
-	GinConfig  GinConfig  `mapstructure:"gin"`
-}
-
-type GinConfig struct {
-	Mode string `mapstructure:"mode" validate:"required"`
 }
 
 type HTTPConfig struct {
