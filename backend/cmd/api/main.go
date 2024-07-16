@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-contrib/cors"
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
@@ -63,10 +62,6 @@ func init() {
 	handler := injector.InitializeRestHandler(c.DBConfig)
 	handler.GetHealthCheckRoute(r)
 	handler.GetRoute(r)
-
-	for _, route := range r.Routes() {
-		fmt.Printf("Method: %s, Path: %s\n", route.Method, route.Path)
-	}
 }
 
 func main() {

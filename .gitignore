@@ -3,3 +3,4 @@
 /backend/tmp
 .DS_Store
 .aws-sam
+samconfig.toml
