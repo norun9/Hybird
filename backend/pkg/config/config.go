@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+	"github.com/norun9/Hybird/pkg/log"
 	"github.com/spf13/viper"
 	"path/filepath"
 	"runtime"
@@ -41,6 +43,7 @@ const AppName = "HYBIRD"
 
 func Prepare() AppConfig {
 	viper.SetEnvPrefix(AppName)
+	viper.AutomaticEnv()
 
 	viper.SetConfigName("config")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
@@ -52,11 +55,20 @@ func Prepare() AppConfig {
 	backendDir := filepath.Dir(pkgDir)
 
 	viper.AddConfigPath(backendDir)
-	viper.AddConfigPath("./")
+
+	env := viper.GetString("env.name")
+
+	log.Logger.Info(fmt.Sprintf("ENV: %s", env))
+
+	if env == "dev" {
+		viper.AddConfigPath("./")
+	} else {
+		viper.AddConfigPath("./app")
+	}
+
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
-	viper.AutomaticEnv()
 
 	var c Config
 	if err := viper.Unmarshal(&c); err != nil {
@@ -64,7 +76,6 @@ func Prepare() AppConfig {
 	}
 
 	var appConfig AppConfig
-	env := viper.GetString("env.name")
 	switch env {
 	case "dev":
 		appConfig = c.Dev

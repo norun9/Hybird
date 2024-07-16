@@ -1,29 +1,32 @@
 package main
 
 import (
-	"context"
-	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/awslabs/aws-lambda-go-api-proxy/gin"
+	"fmt"
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/zap"
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/norun9/Hybird/internal/api/injector"
 	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/log"
-	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"time"
 )
 
-var (
-	ginLambda *ginadapter.GinLambda
-	r         *gin.Engine
-	env       string
-)
+var r *gin.Engine
 
-func initRouter() *gin.Engine {
+func init() {
+	log.InitLogger()
+
+	defer func(logger *zap.Logger) {
+		logger.Sync()
+		//err := logger.Sync()
+		//if err != nil && err != syscall.EINVAL {
+		//	logger.Fatal("failed to sync zap logger", zap.Error(err))
+		//}
+	}(log.Logger)
+
 	c := config.Prepare()
+
 	r = gin.Default()
 
 	err := r.SetTrustedProxies(nil)
@@ -48,7 +51,8 @@ func initRouter() *gin.Engine {
 	gin.SetMode(c.GinConfig.Mode)
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     c.HTTPConfig.CORSConfig.AllowedOrigins,
+		//AllowOrigins:     c.HTTPConfig.CORSConfig.AllowedOrigins,
+		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposeHeaders:    []string{"Link"},
@@ -60,37 +64,13 @@ func initRouter() *gin.Engine {
 	handler.GetHealthCheckRoute(r)
 	handler.GetRoute(r)
 
-	return r
-}
-
-func init() {
-	log.InitLogger()
-	defer func(logger *zap.Logger) {
-		err := logger.Sync()
-		if err != nil {
-			logger.Fatal("failed to sync zap logger", zap.Error(err))
-		}
-	}(log.Logger)
-
-	r = initRouter()
-
-	env = viper.GetString("env.name")
-}
-
-func main() {
-	switch env {
-	case "dev":
-		if err := r.Run(":8080"); err != nil {
-			log.Logger.Fatal("failed to run server", zap.Error(err))
-		}
-	case "prd":
-		ginLambda = ginadapter.New(r)
-		lambda.Start(Handler)
-	default:
-		log.Logger.Fatal("unknown environment", zap.String("env", env))
+	for _, route := range r.Routes() {
+		fmt.Printf("Method: %s, Path: %s\n", route.Method, route.Path)
 	}
 }
 
-func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	return ginLambda.ProxyWithContext(ctx, req)
+func main() {
+	if err := r.Run(":8080"); err != nil {
+		log.Logger.Fatal("failed to run server", zap.Error(err))
+	}
 }

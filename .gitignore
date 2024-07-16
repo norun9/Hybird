@@ -2,3 +2,4 @@
 /backend/vendor
 /backend/tmp
 .DS_Store
+.aws-sam

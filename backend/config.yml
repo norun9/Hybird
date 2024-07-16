@@ -1,5 +1,6 @@
 env:
-  name: "dev"
+  name:
+
 dev:
   gin:
     mode: "debug"
@@ -18,7 +19,7 @@ prd:
   http:
     cors:
       allowed_origins:
-        - ""
+        - "http://localhost:3100"
   db:
     host:
     user:
