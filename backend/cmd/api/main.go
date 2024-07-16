@@ -2,9 +2,8 @@ package main
 
 import (
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/zap"
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/norun9/Hybird/internal/api/injector"
 	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/log"
@@ -12,21 +11,24 @@ import (
 	"time"
 )
 
-func main() {
-	var err error
+var r *gin.Engine
 
+func init() {
 	log.InitLogger()
 
 	defer func(logger *zap.Logger) {
-		err := logger.Sync()
-		if err != nil {
-			logger.Fatal("failed to sync zap logger", zap.Error(err))
-		}
+		logger.Sync()
+		//err := logger.Sync()
+		//if err != nil && err != syscall.EINVAL {
+		//	logger.Fatal("failed to sync zap logger", zap.Error(err))
+		//}
 	}(log.Logger)
 
-	r := gin.Default()
+	c := config.Prepare()
 
-	err = r.SetTrustedProxies(nil)
+	r = gin.Default()
+
+	err := r.SetTrustedProxies(nil)
 	if err != nil {
 		log.Logger.Fatal("failed to set trusted proxies", zap.Error(err))
 	}
@@ -45,12 +47,11 @@ func main() {
 	r.Use(ginzap.RecoveryWithZap(log.Logger, true))
 
 	// NOTE:using code: gin.SetMode(gin.ReleaseMode) in production
-	gin.SetMode(gin.DebugMode)
-
-	c := config.Prepare()
+	gin.SetMode(c.GinConfig.Mode)
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     c.HTTPConfig.CORSConfig.AllowedOrigins,
+		//AllowOrigins:     c.HTTPConfig.CORSConfig.AllowedOrigins,
+		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposeHeaders:    []string{"Link"},
@@ -61,7 +62,9 @@ func main() {
 	handler := injector.InitializeRestHandler(c.DBConfig)
 	handler.GetHealthCheckRoute(r)
 	handler.GetRoute(r)
+}
 
+func main() {
 	if err := r.Run(":8080"); err != nil {
 		log.Logger.Fatal("failed to run server", zap.Error(err))
 	}

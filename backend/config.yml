@@ -1,5 +1,6 @@
 env:
-  name: "dev"
+  name:
+
 dev:
   http:
     cors:
@@ -10,3 +11,13 @@ dev:
     user: "hybird"
     pass: "test"
     name: "testdb"
+prd:
+  http:
+    cors:
+      allowed_origins:
+        - "http://localhost:3100"
+  db:
+    host:
+    user:
+    pass:
+    name:
