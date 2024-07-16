@@ -3,8 +3,6 @@ module github.com/norun9/Hybird
 go 1.22
 
 require (
-	github.com/aws/aws-lambda-go v1.47.0
-	github.com/awslabs/aws-lambda-go-api-proxy v0.16.2
 	github.com/cockroachdb/errors v1.11.3
 	github.com/friendsofgo/errors v0.9.2
 	github.com/gin-contrib/cors v1.7.2
