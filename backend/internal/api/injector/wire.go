@@ -5,6 +5,7 @@ package injector
 
 import (
 	"github.com/google/wire"
+	db2 "github.com/norun9/Hybird/internal/api/external/db"
 	"github.com/norun9/Hybird/internal/api/interfaces"
 	"github.com/norun9/Hybird/internal/api/interfaces/controllers"
 	repository2 "github.com/norun9/Hybird/internal/api/interfaces/gateways/repository"
@@ -14,7 +15,7 @@ import (
 )
 
 var inputBoundarySet = wire.NewSet(
-	db.NewDB,
+	db2.NewDB,
 	db.NewDBClient,
 	repository2.NewMessageRepository,
 	usecase.NewMessageInteractor,

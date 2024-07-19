@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/norun9/Hybird/internal/api/domain/model"
-	"github.com/norun9/Hybird/internal/api/domain/repository"
+	"github.com/norun9/Hybird/internal/api/usecase/repository"
 	"math"
 )
 

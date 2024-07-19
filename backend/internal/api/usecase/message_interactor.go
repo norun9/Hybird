@@ -3,9 +3,9 @@ package usecase
 import (
 	"context"
 	"github.com/norun9/Hybird/internal/api/domain/model"
-	"github.com/norun9/Hybird/internal/api/domain/repository"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/input"
 	"github.com/norun9/Hybird/internal/api/usecase/dto/output"
+	"github.com/norun9/Hybird/internal/api/usecase/repository"
 	"github.com/norun9/Hybird/pkg/db"
 	"github.com/norun9/Hybird/pkg/dbmodels"
 	"github.com/norun9/Hybird/pkg/util"
