@@ -9,8 +9,8 @@ package injector
 import (
 	"github.com/google/wire"
 	"github.com/norun9/Hybird/internal/api/interfaces"
-	"github.com/norun9/Hybird/internal/api/interfaces/controller"
-	repository2 "github.com/norun9/Hybird/internal/api/interfaces/gateways/repository"
+	"github.com/norun9/Hybird/internal/api/interfaces/controllers"
+	"github.com/norun9/Hybird/internal/api/interfaces/gateways/repository"
 	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/db"
@@ -21,10 +21,10 @@ import (
 func InitializeRestHandler(dbConfig config.DBConfig) interfaces.IRestHandler {
 	sqlDB := db.NewDB(dbConfig)
 	client := db.NewDBClient(sqlDB)
-	iMessageRepository := repository2.NewMessageRepository(client)
-	paging := repository2.NewPaging()
+	iMessageRepository := repository.NewMessageRepository(client)
+	paging := repository.NewPaging()
 	iMessageInputBoundary := usecase.NewMessageInteractor(iMessageRepository, paging)
-	iMessageController := controller.NewMessageController(iMessageInputBoundary)
+	iMessageController := controllers.NewMessageController(iMessageInputBoundary)
 	v := interfaces.GetMapRoute(iMessageController)
 	iRestHandler := interfaces.NewRestHandler(v)
 	return iRestHandler
@@ -32,4 +32,4 @@ func InitializeRestHandler(dbConfig config.DBConfig) interfaces.IRestHandler {
 
 // wire.go:
 
-var inputBoundarySet = wire.NewSet(db.NewDB, db.NewDBClient, repository2.NewMessageRepository, usecase.NewMessageInteractor)
+var inputBoundarySet = wire.NewSet(db.NewDB, db.NewDBClient, repository.NewMessageRepository, usecase.NewMessageInteractor)
