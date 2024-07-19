@@ -71,7 +71,7 @@ It orchestrates the flow of data to and from the entities and leverages the inte
 
 ### Interface Adapters (interfaces)
 
-Located in the `interfaces` and `infra` directory,  
+Located in the `interfaces` directory,  
 this layer converts data from the format most convenient for the use cases and entities to the format most convenient for external agents such as databases and the web.
 
 - **Controllers**: Handle the HTTP requests and responses, interacting with the use cases.
