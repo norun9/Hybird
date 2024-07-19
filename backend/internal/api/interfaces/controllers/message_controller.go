@@ -39,6 +39,7 @@ func (mc *messageController) Create(c *gin.Context, p input.MessageInput) (*outp
 }
 
 func (mc *messageController) Receive(c *gin.Context, _ interface{}) error {
+	// TODO: コントローラーの責任が集中しているため、ビジネスロジックやデータ処理の部分を分離する
 	conn, err := myws.Upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		return err
