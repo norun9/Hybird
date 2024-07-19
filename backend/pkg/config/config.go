@@ -1,8 +1,6 @@
 package config
 
 import (
-	"fmt"
-	"github.com/norun9/Hybird/pkg/log"
 	"github.com/spf13/viper"
 	"path/filepath"
 	"runtime"
@@ -52,8 +50,6 @@ func Prepare() AppConfig {
 	viper.AddConfigPath(backendDir)
 
 	env := viper.GetString("env.name")
-
-	log.Logger.Info(fmt.Sprintf("ENV: %s", env))
 
 	if env == "dev" {
 		viper.AddConfigPath("./")

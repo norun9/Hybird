@@ -38,7 +38,7 @@ func (i *messageInteractor) Create(ctx context.Context, p input.MessageInput) (r
 	}); err != nil {
 		return nil, err
 	}
-	createdAt := util.TimeOnly12HrFormatter(created.CreatedAt)
+	createdAt := util.DateTimeJaFormatter(created.CreatedAt)
 	return &output.MessageOutput{
 		Content:   created.Content,
 		CreatedAt: createdAt,
@@ -67,7 +67,7 @@ func (i *messageInteractor) List(ctx context.Context, p input.MessageList) (resu
 		return nil, err
 	}
 	for _, message := range messages {
-		createdAt := util.TimeOnly12HrFormatter(message.CreatedAt)
+		createdAt := util.DateTimeJaFormatter(message.CreatedAt)
 		result = append(result, &output.MessageOutput{
 			Content:   message.Content,
 			CreatedAt: createdAt,

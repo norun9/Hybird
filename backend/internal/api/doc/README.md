@@ -12,21 +12,20 @@ The architecture promotes separation of concerns, making the system more maintai
 
 ## Directory Structure
 ```bash
-.
 ├── domain
 │   ├── model # Entities
 │   └── repository # Data Access Interface<I(Interface)>
-├── infra
-│   └── repository # Data Access
 ├── injector
 │   └── wire.go
 ├── interfaces
-│   └── controller # Controller
+│   ├── controller # Controllers
+│   └── gateways # Gateways
+│       └── repository # Data Access (Database Repositories)
 └── usecase
     ├── dto # DTO (DataTransferObject)
     │   ├── input # Input Data<DS(Data Structure)>
     │   └── output # Output Data<DS>
-    └── interactor.go 
+    └── interactor.go
     # Usecase Interactor:𝑈
     # InputBoundary:𝐼𝐵
     # OutputBoundary:𝑂𝐵
@@ -70,7 +69,7 @@ It orchestrates the flow of data to and from the entities and leverages the inte
 - domain
 - usecase
 
-### Interface Adapters (interfaces / infra)
+### Interface Adapters (interfaces)
 
 Located in the `interfaces` and `infra` directory,  
 this layer converts data from the format most convenient for the use cases and entities to the format most convenient for external agents such as databases and the web.

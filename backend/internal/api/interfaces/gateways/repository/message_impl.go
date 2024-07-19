@@ -6,7 +6,7 @@ import (
 	"github.com/cockroachdb/errors"
 	"github.com/norun9/Hybird/internal/api/domain/model"
 	"github.com/norun9/Hybird/internal/api/domain/repository"
-	"github.com/norun9/Hybird/internal/api/infra/transfer"
+	"github.com/norun9/Hybird/internal/api/interfaces/gateways/transfer"
 	"github.com/norun9/Hybird/pkg/db"
 	"github.com/norun9/Hybird/pkg/dbmodels"
 	"github.com/norun9/Hybird/pkg/log"

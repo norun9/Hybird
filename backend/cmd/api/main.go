@@ -47,7 +47,7 @@ func init() {
 	r.Use(ginzap.RecoveryWithZap(log.Logger, true))
 
 	// NOTE:using code: gin.SetMode(gin.ReleaseMode) in production
-	gin.SetMode(c.GinConfig.Mode)
+	gin.SetMode(gin.ReleaseMode)
 
 	r.Use(cors.New(cors.Config{
 		//AllowOrigins:     c.HTTPConfig.CORSConfig.AllowedOrigins,
