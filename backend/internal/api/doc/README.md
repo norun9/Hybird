@@ -89,6 +89,9 @@ This layer is responsible for interacting with external services, databases, and
 - **Web Frameworks**: Gin, which handle HTTP requests and responses.
 - **Database Drivers:**: MySQL drivers, which enable interaction with relational databases.
 
+#### Dependencies
+- No dependencies
+
 ### Dependency Injection (injector) 
 
 Located in the `injector` directory, this layer manages dependency injection configurations.  
