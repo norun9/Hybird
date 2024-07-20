@@ -13,8 +13,7 @@ The architecture promotes separation of concerns, making the system more maintai
 ## Directory Structure
 ```bash
 ├── domain
-│   ├── model # Entities
-│   └── repository # Data Access Interface<I(Interface)>
+│   └── model # Entities
 ├── external # Frameworks & Drivers
 │   ├── db # DB
 │   └── server # Web
@@ -28,7 +27,7 @@ The architecture promotes separation of concerns, making the system more maintai
     ├── dto # DTO (DataTransferObject)
     │   ├── input # Input Data<DS(Data Structure)>
     │   └── output # Output Data<DS>
-    ├── repository
+    ├── repository # Data Access Interface<I(Interface)>
     └── interactor.go
     # Usecase Interactor:𝑈
     # InputBoundary:𝐼𝐵
@@ -89,7 +88,7 @@ this layer converts data from the format most convenient for the use cases and e
 
 ### Frameworks & Drivers (external)
 
-The Frameworks & Drivers layer, often referred to as the "external" layer, contains components and frameworks that interact directly with external systems and provide low-level implementations of interfaces defined in the Interface Adapters layer. 
+The Frameworks & Drivers layer, often referred to as the `external` layer, contains components and frameworks that interact directly with external systems and provide low-level implementations of interfaces defined in the Interface Adapters layer. 
 This layer is responsible for interacting with external services, databases, and other systems that your application needs to function.
 
 - **Web Frameworks**: Gin, which handle HTTP requests and responses.
