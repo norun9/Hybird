@@ -49,13 +49,7 @@ The architecture promotes separation of concerns, making the system more maintai
 Located in the `domain` directory, the entities represent the core business objects and rules. 
 This layer is independent of any other layers and frameworks.
 
-- **Model**: Contains the business entities (e.g., message.go). 
-- **Repository**: Contains abstract interfaces for data access (e.g., IMessageRepository).  
-These interfaces are defined here to prevent the `usecase` layer from depending on the interface adapters.
-
-> [!NOTE]
-> Typically, `repository` is part of the interface adapters layer as `gateways`.  
-> However, to avoid the `usecase` layer depending on the interface adapters, we define repository interfaces in the `domain` layer.
+- **Model**: Contains the business entities (e.g., message.go).
 
 #### Dependencies
 - No dependencies
@@ -67,6 +61,7 @@ It orchestrates the flow of data to and from the entities and leverages the inte
 
 - **Interactor**: Contains the business logic that interacts with the entities.
 - **DTO**: Data Transfer Objects used for input and output (e.g., input and output directories).
+- **Repository**: Contains abstract interfaces for data access (e.g., IMessageRepository).
 
 #### Dependencies
 - domain
