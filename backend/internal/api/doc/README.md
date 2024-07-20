@@ -20,7 +20,7 @@ The architecture promotes separation of concerns, making the system more maintai
 ├── injector
 │   └── wire.go
 ├── interfaces
-│   ├── controller # Controllers
+│   ├── controllers # Controllers
 │   └── gateways # Gateways
 │       └── repository # Data Access (Database Repositories)
 └── usecase
