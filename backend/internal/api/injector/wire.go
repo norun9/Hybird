@@ -8,7 +8,7 @@ import (
 	db2 "github.com/norun9/Hybird/internal/api/external/db"
 	"github.com/norun9/Hybird/internal/api/interfaces"
 	"github.com/norun9/Hybird/internal/api/interfaces/controllers"
-	repository2 "github.com/norun9/Hybird/internal/api/interfaces/gateways/repository"
+	"github.com/norun9/Hybird/internal/api/interfaces/gateways/repository"
 	"github.com/norun9/Hybird/internal/api/usecase"
 	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/db"
@@ -17,14 +17,14 @@ import (
 var inputBoundarySet = wire.NewSet(
 	db2.NewDB,
 	db.NewDBClient,
-	repository2.NewMessageRepository,
+	repository.NewMessageRepository,
 	usecase.NewMessageInteractor,
 )
 
 func InitializeRestHandler(config.DBConfig) (_ interfaces.IRestHandler) {
 	wire.Build(
 		inputBoundarySet,
-		repository2.NewPaging,
+		repository.NewPaging,
 		controllers.NewMessageController,
 		interfaces.GetMapRoute,
 		interfaces.NewRestHandler,
