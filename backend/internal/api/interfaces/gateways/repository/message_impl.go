@@ -2,14 +2,12 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"github.com/cockroachdb/errors"
 	"github.com/norun9/Hybird/internal/api/domain/model"
-	"github.com/norun9/Hybird/internal/api/domain/repository"
 	"github.com/norun9/Hybird/internal/api/interfaces/gateways/transfer"
+	"github.com/norun9/Hybird/internal/api/usecase/repository"
 	"github.com/norun9/Hybird/pkg/db"
 	"github.com/norun9/Hybird/pkg/dbmodels"
-	"github.com/norun9/Hybird/pkg/log"
 	"github.com/norun9/Hybird/pkg/merror"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -53,7 +51,6 @@ func (r *messageRepository) List(ctx context.Context, queryMods ...db.Query) (re
 
 func (r *messageRepository) Create(ctx context.Context, model *model.Message) (*model.Message, error) {
 	entity := transfer.ToMessageEntity(model)
-	log.Logger.Info(fmt.Sprintf("Entity: %v", entity))
 	if err := entity.Insert(ctx, r.dbClient.Get(ctx), boil.Infer()); err != nil {
 		return nil, errors.Wrap(err, merror.ErrDatabase.Error())
 	}

@@ -13,8 +13,10 @@ The architecture promotes separation of concerns, making the system more maintai
 ## Directory Structure
 ```bash
 ├── domain
-│   ├── model # Entities
-│   └── repository # Data Access Interface<I(Interface)>
+│   └── model # Entities
+├── external # Frameworks & Drivers
+│   ├── db # DB
+│   └── server # Web
 ├── injector
 │   └── wire.go
 ├── interfaces
@@ -25,6 +27,7 @@ The architecture promotes separation of concerns, making the system more maintai
     ├── dto # DTO (DataTransferObject)
     │   ├── input # Input Data<DS(Data Structure)>
     │   └── output # Output Data<DS>
+    ├── repository # Data Access Interface<I(Interface)>
     └── interactor.go
     # Usecase Interactor:𝑈
     # InputBoundary:𝐼𝐵
@@ -46,13 +49,7 @@ The architecture promotes separation of concerns, making the system more maintai
 Located in the `domain` directory, the entities represent the core business objects and rules. 
 This layer is independent of any other layers and frameworks.
 
-- **Model**: Contains the business entities (e.g., message.go). 
-- **Repository**: Contains abstract interfaces for data access (e.g., IMessageRepository).  
-These interfaces are defined here to prevent the `usecase` layer from depending on the interface adapters.
-
-> [!NOTE]
-> Typically, `repository` is part of the interface adapters layer as `gateways`.  
-> However, to avoid the `usecase` layer depending on the interface adapters, we define repository interfaces in the `domain` layer.
+- **Model**: Contains the business entities (e.g., message.go).
 
 #### Dependencies
 - No dependencies
@@ -64,6 +61,7 @@ It orchestrates the flow of data to and from the entities and leverages the inte
 
 - **Interactor**: Contains the business logic that interacts with the entities.
 - **DTO**: Data Transfer Objects used for input and output (e.g., input and output directories).
+- **Repository**: Contains abstract interfaces for data access (e.g., IMessageRepository).
 
 #### Dependencies
 - domain
@@ -82,6 +80,17 @@ this layer converts data from the format most convenient for the use cases and e
 #### Dependencies
 - domain
 - usecase
+
+### Frameworks & Drivers (external)
+
+The Frameworks & Drivers layer, often referred to as the `external` layer, contains components and frameworks that interact directly with external systems and provide low-level implementations of interfaces defined in the Interface Adapters layer. 
+This layer is responsible for interacting with external services, databases, and other systems that your application needs to function.
+
+- **Web Frameworks**: Gin, which handle HTTP requests and responses.
+- **Database Drivers:**: MySQL drivers, which enable interaction with relational databases.
+
+#### Dependencies
+- No dependencies
 
 ### Dependency Injection (injector) 
 
