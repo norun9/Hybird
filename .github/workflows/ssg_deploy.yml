@@ -35,6 +35,6 @@ jobs:
       - name: Clear CloudFront Cache
         uses: chetan/invalidate-cloudfront-action@v2
         env:
-          DISTRIBUTION: ${{ env.AWS_CF_ID }}
+          DISTRIBUTION: ${{ secrets.AWS_CF_ID }}
           PATHS: "/*"
           AWS_REGION: "ap-northeast-1"
