@@ -32,5 +32,9 @@ jobs:
         run: |
           echo "AWS S3 sync"
           aws s3 sync --region ap-northeast-1 ./out s3://${{ secrets.AWS_S3_BUCKET }} --delete
-          echo "AWS CF reset"
-          aws cloudfront create-invalidation --region ap-northeast-1 --distribution-id ${{ secrets.AWS_CF_ID }} --paths "/*"
+      - name: Clear CloudFront Cache
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ env.AWS_CF_ID }}
+          PATHS: "/*"
+          AWS_REGION: "ap-northeast-1"
