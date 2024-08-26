@@ -8,6 +8,7 @@ import (
 	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/log"
 	"go.uber.org/zap"
+	"syscall"
 	"time"
 )
 
@@ -18,10 +19,10 @@ func init() {
 
 	defer func(logger *zap.Logger) {
 		logger.Sync()
-		//err := logger.Sync()
-		//if err != nil && err != syscall.EINVAL {
-		//	logger.Fatal("failed to sync zap logger", zap.Error(err))
-		//}
+		err := logger.Sync()
+		if err != nil && err != syscall.EINVAL {
+			logger.Fatal("failed to sync zap logger", zap.Error(err))
+		}
 	}(log.Logger)
 
 	c := config.Prepare()

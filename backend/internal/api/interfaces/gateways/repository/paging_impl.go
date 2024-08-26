@@ -12,7 +12,7 @@ var (
 
 type paging struct{}
 
-func NewPaging() repository.Paging {
+func NewPaging() repository.IPaging {
 	return &paging{}
 }
 
