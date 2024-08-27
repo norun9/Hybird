@@ -7,8 +7,6 @@ const fetcher = <T>(url: string): Promise<T> => apiClient.get<T>(url).then((res:
 export const useFetch = <T>(url: string) => {
   const { data, error } = useSWR<T>(url, fetcher)
 
-  console.log(error)
-
   return {
     data,
     isLoading: !error && !data,
