@@ -14,7 +14,7 @@ COPY --from=build_base /tmp/gin/config.yml /app/config.yml
 
 RUN ls -la /app
 
-ENV PORT=8000 GIN_MODE=release
+ENV PORT=8000 GIN_MODE=release HYBIRD_ENV_NAME=prd
 EXPOSE 8000
 
 CMD ["/app/bootstrap"]
