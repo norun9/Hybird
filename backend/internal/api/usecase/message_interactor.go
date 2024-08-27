@@ -20,11 +20,11 @@ type IMessageInputBoundary interface {
 
 type messageInteractor struct {
 	messageRepo repository.IMessageRepository
-	pagingRepo  repository.Paging
+	pagingRepo  repository.IPaging
 }
 
 // NewMessageInteractor Polymorphism
-func NewMessageInteractor(messageRepo repository.IMessageRepository, pagingRepo repository.Paging) IMessageInputBoundary {
+func NewMessageInteractor(messageRepo repository.IMessageRepository, pagingRepo repository.IPaging) IMessageInputBoundary {
 	return &messageInteractor{
 		messageRepo,
 		pagingRepo,

@@ -22,7 +22,7 @@ type HTTPConfig struct {
 }
 
 type CORSConfig struct {
-	AllowedOrigins []string `mapstructure:"allowed_origins" validate:"required"`
+	AllowedOrigin string `mapstructure:"allowed_origin" validate:"required"`
 }
 
 type DBConfig struct {

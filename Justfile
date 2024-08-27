@@ -11,7 +11,7 @@ migrate_down:
 		goose -dir=db/migrations mysql "hybird:test@/testdb" down
 
 client build="":
-  docker-compose -f docker-compose-client.yml up {{ build }}
+  docker compose -f docker-compose-client.yml up {{ build }}
 
 air build="":
-  docker-compose up {{ build }}
+  docker compose up {{ build }}
