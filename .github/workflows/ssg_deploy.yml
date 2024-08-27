@@ -4,8 +4,11 @@ on: workflow_dispatch
 permissions:
   id-token: write
 
+# TODO:URLはAPIGatewayで作成されたものに修正する
 env:
   AWS_REGION: "ap-northeast-1"
+  NEXT_PUBLIC_API_BASE_URL: "http://localhost:8080"
+  NEXT_PUBLIC_WEB_SOCKET_URL: "ws://localhost:8080/v1/messages/ws"
 
 jobs:
   deploy:
@@ -27,9 +30,11 @@ jobs:
       - name: Install Dependencies
         run: yarn install
       - name: Build
+        env: # 環境変数を設定してビルドプロセスに渡す
+          NEXT_PUBLIC_API_BASE_URL: ${{ env.NEXT_PUBLIC_API_BASE_URL }}
+          NEXT_PUBLIC_WEB_SOCKET_URL: ${{ env.NEXT_PUBLIC_WEB_SOCKET_URL }}
         run: |
           yarn build
-          ls -la out
       - name: Deploy
         run: |
           echo "AWS S3 sync"
