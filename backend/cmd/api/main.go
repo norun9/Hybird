@@ -44,7 +44,7 @@ func init() {
 	gin.SetMode(gin.ReleaseMode)
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     c.HTTPConfig.CORSConfig.AllowedOrigins,
+		AllowOrigins:     []string{c.HTTPConfig.CORSConfig.AllowedOrigin},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposeHeaders:    []string{"Link"},

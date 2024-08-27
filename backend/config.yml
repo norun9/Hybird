@@ -4,8 +4,7 @@ env:
 dev:
   http:
     cors:
-      allowed_origins:
-        - "http://localhost:3100"
+      allowed_origin: "http://localhost:3100"
   db:
     host: "mysql"
     user: "hybird"
@@ -14,8 +13,7 @@ dev:
 prd:
   http:
     cors:
-      allowed_origins:
-        - "https://hybird.click"
+      allowed_origin:
   db:
     host:
     user:
