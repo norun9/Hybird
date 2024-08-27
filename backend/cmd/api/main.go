@@ -8,7 +8,6 @@ import (
 	"github.com/norun9/Hybird/pkg/config"
 	"github.com/norun9/Hybird/pkg/log"
 	"go.uber.org/zap"
-	"syscall"
 	"time"
 )
 
@@ -17,13 +16,7 @@ var r *gin.Engine
 func init() {
 	log.InitLogger()
 
-	defer func(logger *zap.Logger) {
-		logger.Sync()
-		err := logger.Sync()
-		if err != nil && err != syscall.EINVAL {
-			logger.Fatal("failed to sync zap logger", zap.Error(err))
-		}
-	}(log.Logger)
+	defer log.Logger.Sync()
 
 	c := config.Prepare()
 
@@ -51,8 +44,7 @@ func init() {
 	gin.SetMode(gin.ReleaseMode)
 
 	r.Use(cors.New(cors.Config{
-		//AllowOrigins:     c.HTTPConfig.CORSConfig.AllowedOrigins,
-		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowOrigins:     c.HTTPConfig.CORSConfig.AllowedOrigins,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposeHeaders:    []string{"Link"},

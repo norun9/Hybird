@@ -60,6 +60,7 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
+
 	f := route.Func
 	validate := validator.New()
 	args := []reflect.Value{

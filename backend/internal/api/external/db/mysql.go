@@ -6,7 +6,6 @@ import (
 	"github.com/cockroachdb/errors"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/norun9/Hybird/pkg/config"
-	"github.com/norun9/Hybird/pkg/log"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"time"
 	_ "time/tzdata"
@@ -16,10 +15,6 @@ const timezone string = "Asia%2FTokyo"
 
 func NewDB(c config.DBConfig) *sql.DB {
 	loc, err := time.LoadLocation(timezone)
-	// TODO:configの値がないから
-	log.Logger.Info(fmt.Sprintf(
-		"%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=%s",
-		c.User, c.Pass, c.Host, c.Name, loc))
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=%s",
 		c.User, c.Pass, c.Host, c.Name, loc)
