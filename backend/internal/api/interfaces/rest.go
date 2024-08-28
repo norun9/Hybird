@@ -56,7 +56,7 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 	path := buildPath(r)
 	route, ok := h.routeMap[Path{path, method}]
 	if !ok {
-		log.Logger.Error(fmt.Sprintf("Failed to exec. path:%s method:%s", path, method))
+		log.Error(fmt.Sprintf("Failed to exec. path:%s method:%s", path, method))
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
@@ -73,7 +73,7 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 		if inputType.Kind() != reflect.Interface {
 			if err = validate.Struct(params); err != nil {
 				// input struct validation failed
-				log.Logger.Error("Validation struct error", zap.Error(err))
+				log.Error("Validation struct error", zap.Error(err))
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
@@ -97,32 +97,32 @@ func (h *restHandler) Exec(c *gin.Context, params interface{}) {
 			return
 		}
 		err = errResult.Interface().(error)
-		log.Logger.Error("Execution error", zap.Error(err))
+		log.Error("Execution error", zap.Error(err))
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	case 2:
 		result, errResult := results[0], results[1]
 		if errResult.Interface() != nil {
 			err = errResult.Interface().(error)
-			log.Logger.Error("Execution error", zap.Error(err))
+			log.Error("Execution error", zap.Error(err))
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		// If concrete results are available, convert them to JSON
 		if responseJSON, err = json.Marshal(result.Interface()); err != nil {
-			log.Logger.Error("Failed to marshal response", zap.Error(err))
+			log.Error("Failed to marshal response", zap.Error(err))
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	default:
-		log.Logger.Error("Execution error", zap.Error(err))
+		log.Error("Execution error", zap.Error(err))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 	// response json value to front-end using response writer
 	w.Header().Set("Content-Type", "application/json")
 	if _, _err := w.Write(responseJSON); _err != nil {
-		log.Logger.Error("Failed to write response", zap.Error(_err))
+		log.Error("Failed to write response", zap.Error(_err))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}

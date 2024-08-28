@@ -50,7 +50,7 @@ func (mc *messageController) Receive(c *gin.Context, _ interface{}) error {
 	for {
 		_, msg, err := conn.ReadMessage()
 		if err != nil {
-			log.Logger.Error("Failed to read message", zap.Error(err))
+			log.Error("Failed to read message", zap.Error(err))
 			break
 		}
 		rooms.Send(msg)

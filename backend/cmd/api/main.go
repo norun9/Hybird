@@ -16,7 +16,7 @@ var r *gin.Engine
 func init() {
 	log.InitLogger()
 
-	defer log.Logger.Sync()
+	defer log.Sync()
 
 	c := config.Prepare()
 
@@ -24,21 +24,21 @@ func init() {
 
 	err := r.SetTrustedProxies(nil)
 	if err != nil {
-		log.Logger.Fatal("failed to set trusted proxies", zap.Error(err))
+		log.Fatal("failed to set trusted proxies", zap.Error(err))
 	}
 
 	// Add a ginzap middleware, which:
 	//   - Logs all requests, like a combined access and error log.
 	//   - Logs to stdout.
 	//   - RFC3339 with UTC time format.
-	r.Use(ginzap.GinzapWithConfig(log.Logger, &ginzap.Config{
+	r.Use(ginzap.GinzapWithConfig(log.Logger(), &ginzap.Config{
 		UTC:        false,
 		TimeFormat: time.RFC3339,
 	}))
 
 	// Logs all panic to error log
 	//   - stack means whether output the stack info.
-	r.Use(ginzap.RecoveryWithZap(log.Logger, true))
+	r.Use(ginzap.RecoveryWithZap(log.Logger(), true))
 
 	// NOTE:using code: gin.SetMode(gin.ReleaseMode) in production
 	gin.SetMode(gin.ReleaseMode)
@@ -59,6 +59,6 @@ func init() {
 
 func main() {
 	if err := r.Run(":8080"); err != nil {
-		log.Logger.Fatal("failed to run server", zap.Error(err))
+		log.Fatal("failed to run server", zap.Error(err))
 	}
 }
