@@ -14,7 +14,7 @@ FROM golang:1.22-alpine
 
 WORKDIR /app/go/base
 
-ENV HYBIRD_ENV_NAME=dev GIN_MODE=debug
+ENV HYBIRD_ENV_NAME=dev
 
 COPY --from=builder /go/pkg/mod /go/pkg/mod
 COPY --from=builder /go/bin/air /go/bin/air
