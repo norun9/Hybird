@@ -1,11 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: "Hybird Lambda Function"
-
+Description: Hybird Lambda Function
 Globals:
   Function:
     Timeout: 10
-
 Resources:
   HybirdGinFunction:
     Type: AWS::Serverless::Function
@@ -15,11 +13,14 @@ Resources:
       Events:
         HybirdAPIEvent:
           Type: HttpApi
+      ImageUri: hybirdginfunction:v1
     Metadata:
+      DockerContext: /Users/tomoyaueno/GolandProjects/Hybird/backend
       DockerTag: v1
-      DockerContext: ./backend
       Dockerfile: Dockerfile
+      SamResourceId: HybirdGinFunction
 Outputs:
   GinApi:
-    Description: "API Gateway endpoint URL for Prod stage for Gin function"
-    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/"
+    Description: API Gateway endpoint URL for Prod stage for Gin function
+    Value:
+      Fn::Sub: https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/
