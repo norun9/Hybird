@@ -9,12 +9,20 @@ PENDING
 
 ## Deploy
 
-### Backend
+### Deprecated: Backend (Cloudformation)
 
 ```bash
 DOCKER_HOST=unix:///Users/xxx/.docker/run/docker.sock sam build --use-container
 
 DOCKER_HOST=unix:///Users/xxx/.docker/run/docker.sock sam deploy --profile xxx --guided
+```
+
+### Terraform
+
+```bash
+terraform plan -out=tfplan
+
+terraform apply "tfplan"
 ```
 
 ### Frontend

@@ -14,8 +14,6 @@ COPY --from=build_base /tmp/gin/config.yml /app/config.yml
 
 RUN ls -la /app
 
-ENV PORT=8000 GIN_MODE=release HYBIRD_ENV_NAME=prd HYBIRD_PRD_HTTP_CORS_ALLOWED_ORIGIN="https://hybird.click"
-
-EXPOSE 8000
+EXPOSE 8080
 
 CMD ["/app/bootstrap"]

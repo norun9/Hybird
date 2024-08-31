@@ -4,3 +4,9 @@
 .DS_Store
 .aws-sam
 samconfig.toml
+/terraform/aws/envs/prd/terraform.tfvars
+/terraform/aws/envs/prd/terraform.tfstate.backup
+/terraform/aws/envs/prd/terraform.tfstate
+/terraform/aws/envs/prd/.terraform.lock.hcl
+/terraform/aws/envs/prd/tfplan
+/terraform/aws/envs/prd/.terraform
