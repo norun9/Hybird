@@ -36,6 +36,8 @@ resource "null_resource" "build_push_dkr_img" {
   }
 }
 
+# NOTE: Maybe I don't need to modularize it, but I'd like to use 'module'.
+
 module "vpc" {
   source = "./modules/vpc"
 
