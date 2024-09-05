@@ -1,5 +1,11 @@
 terraform {
-# TODO: setting backend(s3) for tfstate file
+  backend "s3" {
+    bucket         = "hybird-terraform-tfstate"
+    key            = "./terraform.tfstate"
+    region         = "ap-northeast-1"
+    # dynamodb_table = "terraform-locks"  # DynamoDB table for lock management (optional)
+    encrypt        = true
+  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -22,8 +28,8 @@ provider "aws" {
 # local-exec for build and push of docker image
 resource "null_resource" "build_push_dkr_img" {
   triggers = {
-#     detect_docker_source_changes = local.dkr_img_src_sha256
-    detect_docker_source_changes = timestamp()
+    detect_docker_source_changes = local.dkr_img_src_sha256
+#     detect_docker_source_changes = timestamp()
   }
   provisioner "local-exec" {
     command = local.dkr_build_cmd
@@ -39,10 +45,10 @@ module "vpc" {
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
-module "ecr" {
-  source = "./modules/ecr"
-  repository_name = local.ecr_repo
-}
+# module "ecr" {
+#   source = "./modules/ecr"
+#   repository_name = local.ecr_repo
+# }
 
 data "aws_ecr_image" "latest" {
   repository_name = local.ecr_repo
@@ -72,4 +78,10 @@ module "lambda" {
   db_pass = module.mysql.db_pass
   db_user = module.mysql.db_user
   cors_allowed_origin = local.cors_allowed_origin
+}
+
+module "api_gw" {
+  source = "./modules/api_gw"
+  lambda_invoke_arn = module.lambda.lambda_invoke_arn
+  lambda_function_name = module.lambda.lambda_function_name
 }

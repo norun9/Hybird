@@ -3,6 +3,8 @@ resource "aws_security_group" "lambda_sg" {
   description = "Security group for Lambda function"
   vpc_id      = var.vpc_id
 
+  # Inbound rules for the Go Gin server running inside the Lambda function.
+  # This rule allows traffic on port 8080, which is the port where the Go Gin server listens.
   ingress {
     from_port   = 8080
     to_port     = 8080
