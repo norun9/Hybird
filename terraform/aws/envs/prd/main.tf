@@ -47,10 +47,10 @@ module "vpc" {
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
-# module "ecr" {
-#   source = "./modules/ecr"
-#   repository_name = local.ecr_repo
-# }
+module "ecr" {
+  source = "./modules/ecr"
+  repository_name = local.ecr_repo
+}
 
 data "aws_ecr_image" "latest" {
   repository_name = local.ecr_repo
