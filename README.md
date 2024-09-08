@@ -23,7 +23,7 @@ terraform apply "tfplan"
 
 ### Frontend
 
-Run GitHub Actions manually (ssg_deploy)
+Run GitHub Actions manually ([ssg_deploy.yml](.github/workflows/ssg_deploy.yml))
 
 ### Goose Migration to RDS via Bastion
 
