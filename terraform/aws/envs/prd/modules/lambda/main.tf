@@ -53,4 +53,6 @@ resource "aws_lambda_function" "hybird_lambda" {
     subnet_ids         = [var.subnet_id]
     security_group_ids = [aws_security_group.lambda_sg.id]
   }
+
+  kms_key_arn = "arn:aws:kms:ap-northeast-1:730335200646:key/983390aa-6656-47a0-94dd-7b1b26d64bfd"
 }

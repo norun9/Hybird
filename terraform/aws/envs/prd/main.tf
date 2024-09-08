@@ -29,7 +29,6 @@ provider "aws" {
 resource "null_resource" "build_push_dkr_img" {
   triggers = {
     detect_docker_source_changes = local.dkr_img_src_sha256
-#     detect_docker_source_changes = timestamp()
   }
   provisioner "local-exec" {
     command = local.dkr_build_cmd
@@ -42,7 +41,9 @@ module "vpc" {
   source = "./modules/vpc"
 
   cidr_block = "10.0.0.0/16"
-  availability_zones = ["ap-northeast-1a", "ap-northeast-1c"]
+  availability_zones_for_private_subnet = ["ap-northeast-1a", "ap-northeast-1c"]
+  availability_zone_for_public_subnet = "ap-northeast-1a"
+  public_subnet = "10.0.3.0/24"
   vpc_name = "hybird-vpc"
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
 }
@@ -86,4 +87,12 @@ module "api_gw" {
   source = "./modules/api_gw"
   lambda_invoke_arn = module.lambda.lambda_invoke_arn
   lambda_function_name = module.lambda.lambda_function_name
+}
+
+module "ec2" {
+  source = "./modules/ec2"
+  vpc_id = module.vpc.vpc_id
+  vpc_cidr_block = module.vpc.vpc_cidr_block
+  subnet_id = module.vpc.public_subnet_id
+  ec2_bastion_role_name = module.iam.ec2_bastion_role_name
 }

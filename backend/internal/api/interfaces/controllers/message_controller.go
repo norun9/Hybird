@@ -14,7 +14,7 @@ var rooms = &myws.Rooms{}
 
 type IMessageController interface {
 	List(c *gin.Context, p input.MessageList) ([]*output.MessageOutput, error)
-	Receive(c *gin.Context, _ interface{}) error
+	Receive(c *gin.Context, _ any) error
 	Create(c *gin.Context, p input.MessageInput) (*output.MessageOutput, error)
 }
 
@@ -38,7 +38,7 @@ func (mc *messageController) Create(c *gin.Context, p input.MessageInput) (*outp
 	return mc.messageIB.Create(ctx, p)
 }
 
-func (mc *messageController) Receive(c *gin.Context, _ interface{}) error {
+func (mc *messageController) Receive(c *gin.Context, _ any) error {
 	// TODO: コントローラーの責任が集中しているため、ビジネスロジックやデータ処理の部分を分離する
 	conn, err := myws.Upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
