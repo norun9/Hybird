@@ -7,7 +7,7 @@
 
 PENDING
 
-## Deployment process
+## Deployment Process
 
 ### Terraform
 
