@@ -2,9 +2,19 @@
 /backend/vendor
 /backend/tmp
 .DS_Store
-/terraform/aws/envs/prd/terraform.tfvars
-/terraform/aws/envs/prd/terraform.tfstate.backup
+# Ignore Terraform state files
 /terraform/aws/envs/prd/terraform.tfstate
+/terraform/aws/envs/prd/terraform.tfstate.backup
+
+# Ignore Terraform lock file
 /terraform/aws/envs/prd/.terraform.lock.hcl
+
+# Ignore Terraform plan file
 /terraform/aws/envs/prd/tfplan
-/terraform/aws/envs/prd/.terraform
+
+# Ignore Terraform working directory
+/terraform/aws/envs/prd/.terraform/
+
+# Optional: Ignore all files under envs except .tf files
+/terraform/aws/envs/prd/*
+!/terraform/aws/envs/prd/*.tf
