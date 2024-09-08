@@ -17,7 +17,7 @@ type Path struct {
 }
 
 type Handler struct {
-	Func interface{}
+	Func any
 }
 
 func GetMapRoute(messageController controllers.IMessageController) map[Path]Handler {

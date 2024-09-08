@@ -15,3 +15,4 @@ client build="":
 
 air build="":
   docker compose up {{ build }}
+
