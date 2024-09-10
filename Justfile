@@ -16,3 +16,6 @@ client build="":
 air build="":
   docker compose up {{ build }}
 
+dynamodb build="":
+  docker compose -f docker-compose-dynamodb.yml up {{ build }}
+
