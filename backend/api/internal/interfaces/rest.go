@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/norun9/HyBird/backend/api/internal/domain/model"
 	"github.com/norun9/HyBird/backend/pkg/log"
 	"go.uber.org/zap"

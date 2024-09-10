@@ -4,8 +4,8 @@ services:
   air:
     container_name: "air"
     build:
-      context: "./backend"
-      dockerfile: "../docker/dev/air/Dockerfile"
+      context: "./backend/api"
+      dockerfile: "../../docker/dev/air/Dockerfile"
     command: "air -c .air.toml"
     working_dir: "/app/go/dev"
     ports:

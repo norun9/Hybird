@@ -14,16 +14,14 @@ func main() {
 	lambda.Start(handleRequest)
 }
 
-func handleRequest(_ context.Context, req *events.APIGatewayWebsocketProxyRequest) (events.APIGatewayProxyResponse, error) {
+func handleRequest(ctx context.Context, req *events.APIGatewayWebsocketProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.InitLogger()
 
 	defer log.Sync()
 
-	svc := mydynamodb.NewDBSession()
-
 	connectionId := req.RequestContext.ConnectionID
 
-	log.Info("websocket connected!",
+	log.Info("websocket connected",
 		zap.String("requestId", req.RequestContext.RequestID),
 		zap.String("connectionId", connectionId))
 
@@ -31,7 +29,9 @@ func handleRequest(_ context.Context, req *events.APIGatewayWebsocketProxyReques
 		ConnectionId: connectionId,
 	}
 
-	err := item.PutConnectionId(svc)
+	svc := mydynamodb.NewDBSession(ctx)
+
+	err := item.PutConnectionId(ctx, svc)
 	if err != nil {
 		return apigw.InternalServerErrorResponse(), err
 	}

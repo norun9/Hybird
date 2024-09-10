@@ -1,10 +1,13 @@
-FROM golang:1.22-alpine AS build_base
+FROM golang:1.23-alpine AS build_base
 RUN apk add --no-cache git
 WORKDIR /tmp/gin
 
-COPY . .
+COPY .. .
+
+WORKDIR /tmp/gin/api
+
 RUN go mod download
-RUN GOOS=linux CGO_ENABLED=0 go build -o bootstrap ./cmd/api/main.go
+RUN GOOS=linux CGO_ENABLED=0 go build -o ../bootstrap ./cmd/main.go
 
 FROM alpine:3.9
 RUN apk add ca-certificates tzdata

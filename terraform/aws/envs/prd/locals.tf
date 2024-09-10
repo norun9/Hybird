@@ -9,12 +9,13 @@ locals {
   ecr_repo  = "hybird_repo"
   image_tag = "latest"
 
-  dkr_img_src_path = "${path.module}/../../../../backend"
+  dkr_build_context_path = "${path.module}/../../../../backend"
+  dkr_img_src_path = "${path.module}/../../../../backend/api"
   dkr_img_src_sha256 = filesha256("${local.dkr_img_src_path}/Dockerfile")
 
   dkr_build_cmd = <<-EOT
         docker build --no-cache -t ${local.ecr_reg}/${local.ecr_repo}:${local.image_tag} \
-            -f ${local.dkr_img_src_path}/Dockerfile ${local.dkr_img_src_path}
+            -f ${local.dkr_img_src_path}/Dockerfile ${local.dkr_build_context_path}
 
         aws --profile ${local.aws_profile} ecr get-login-password --region ${local.aws_region} | \
             docker login --username AWS --password-stdin ${local.ecr_reg}

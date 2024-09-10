@@ -11,10 +11,6 @@ func InternalServerErrorResponse() Response {
 	return Response{StatusCode: http.StatusInternalServerError}
 }
 
-//func BadRequestResponse() Response {
-//	return Response{StatusCode: http.StatusBadRequest}
-//}
-
 func OkResponse() Response {
 	return Response{StatusCode: http.StatusOK}
 }
