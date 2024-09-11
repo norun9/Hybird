@@ -1,6 +1,6 @@
 module github.com/norun9/HyBird/backend/lambda/websocket
 
-go 1.23.0
+go 1.22
 
 replace github.com/norun9/HyBird/backend/pkg/log => ../../pkg/log
 

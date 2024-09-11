@@ -10,13 +10,12 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/norun9/HyBird/backend/pkg/log"
 	"go.uber.org/zap"
+	"os"
 )
 
 type Item struct {
 	ConnectionId string
 }
-
-const tableName = "Connections"
 
 func GetAllConnections(ctx context.Context, svc *dynamodb.Client) ([]Item, error) {
 	input := &dynamodb.ScanInput{
@@ -44,6 +43,8 @@ func (i Item) PutConnectionId(ctx context.Context, svc *dynamodb.Client) error {
 		return err
 	}
 
+	tableName := os.Getenv("TABLE_NAME")
+
 	input := &dynamodb.PutItemInput{
 		Item:      itemAttributes,
 		TableName: aws.String(tableName),
@@ -59,6 +60,7 @@ func (i Item) PutConnectionId(ctx context.Context, svc *dynamodb.Client) error {
 }
 
 func DeleteConnectionId(ctx context.Context, svc *dynamodb.Client, connectionId string) error {
+	tableName := os.Getenv("TABLE_NAME")
 	input := &dynamodb.DeleteItemInput{
 		TableName: aws.String(tableName),
 		Key: map[string]types.AttributeValue{

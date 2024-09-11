@@ -31,7 +31,34 @@ resource "null_resource" "build_push_dkr_img" {
     detect_docker_source_changes = local.dkr_img_src_sha256
   }
   provisioner "local-exec" {
-    command = local.dkr_build_cmd
+    command = local.api_dkr_build_cmd
+  }
+}
+
+resource "null_resource" "build_push_ws_connect_dkr_img" {
+  triggers = {
+    detect_docker_source_changes = timestamp()
+  }
+  provisioner "local-exec" {
+    command = local.ws_connect_dkr_build_cmd
+  }
+}
+
+resource "null_resource" "build_push_ws_disconnect_dkr_img" {
+  triggers = {
+    detect_docker_source_changes = timestamp()
+  }
+  provisioner "local-exec" {
+    command = local.ws_disconnect_dkr_build_cmd
+  }
+}
+
+resource "null_resource" "build_push_ws_default_dkr_img" {
+  triggers = {
+    detect_docker_source_changes = timestamp()
+  }
+  provisioner "local-exec" {
+    command = local.ws_default_dkr_build_cmd
   }
 }
 
@@ -53,9 +80,28 @@ module "ecr" {
   repository_name = local.ecr_repo
 }
 
-data "aws_ecr_image" "latest" {
+data "aws_ecr_image" "api" {
   repository_name = local.ecr_repo
-  most_recent     = true
+  image_tag = "api"
+  depends_on = [null_resource.build_push_dkr_img]
+}
+
+data "aws_ecr_image" "ws_connect" {
+  repository_name = local.ecr_repo
+  image_tag = "ws_connect"
+  depends_on = [null_resource.build_push_ws_connect_dkr_img]
+}
+
+data "aws_ecr_image" "ws_disconnect" {
+  repository_name = local.ecr_repo
+  image_tag = "ws_disconnect"
+  depends_on = [null_resource.build_push_ws_disconnect_dkr_img]
+}
+
+data "aws_ecr_image" "ws_default" {
+  repository_name = local.ecr_repo
+  image_tag = "ws_default"
+  depends_on = [null_resource.build_push_ws_default_dkr_img]
 }
 
 module "iam" {
@@ -73,7 +119,7 @@ module "lambda" {
   source = "./modules/lambda"
   vpc_id = module.vpc.vpc_id
   vpc_cidr_block = module.vpc.vpc_cidr_block
-  image_uri   = data.aws_ecr_image.latest.image_uri
+  image_uri   = data.aws_ecr_image.api.image_uri
   subnet_id   = module.vpc.private_subnet_ids[0]
   lambda_exec_role_arn = module.iam.lambda_exec_role_arn
   db_host = module.mysql.db_host
