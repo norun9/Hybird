@@ -1,15 +1,12 @@
 # Stage 1: Build the Go application
-FROM golang:1.22-alpine AS build
-
-# from "backend" context
-# command: docker build --build-arg LAMBDA_SOURCE_DIR=connect -t latest -f lambda/websocket/Dockerfile .
+FROM golang:1.22-alpine AS build_base
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the source code and dependencies
-COPY lambda/websocket /app/lambda/websocket/
-COPY ../../pkg /app/pkg
+# Copy go.mod and go.sum to download dependencies first (caching purpose)
+COPY lambda/websocket/go.mod lambda/websocket/go.sum /app/lambda/websocket/
+COPY pkg/log/go.mod pkg/log/go.sum /app/pkg/log/
 
 # Change to the websocket directory
 WORKDIR /app/lambda/websocket
@@ -17,15 +14,19 @@ WORKDIR /app/lambda/websocket
 # Download Go modules
 RUN go mod download
 
+# Copy the rest of the source code
+COPY lambda/websocket /app/lambda/websocket/
+COPY pkg /app/pkg/
+
 # Build the Go application
 ARG LAMBDA_SOURCE_DIR=""
-RUN GOOS=linux CGO_ENABLED=0 go build -o bootstrap ./${LAMBDA_SOURCE_DIR}/main.go
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o /app/bootstrap ./${LAMBDA_SOURCE_DIR}/main.go
 
 # Stage 2: Prepare the AWS Lambda runtime
-FROM public.ecr.aws/lambda/go:1
+FROM public.ecr.aws/lambda/provided:al2023
 
-# Copy the compiled Go binary from the build stage
-COPY --from=build /app/lambda/websocket/bootstrap ${LAMBDA_TASK_ROOT}/bootstrap
+# Copy the compiled Go binary from the build stage to the Lambda task directory
+COPY --from=build_base /app/bootstrap ./main
 
-# The entrypoint is automatically handled by the Lambda base image, so no need to specify CMD/ENTRYPOINT
-CMD ["/${LAMBDA_TASK_ROOT}/bootstrap"]
+ENTRYPOINT ["./main"]
+

@@ -7,5 +7,3 @@ resource "aws_ecr_repository" "this" {
     ignore_changes  = [image_tag_mutability]
   }
 }
-
-

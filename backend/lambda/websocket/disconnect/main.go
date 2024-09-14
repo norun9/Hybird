@@ -1,4 +1,4 @@
-package disconnect
+package main
 
 import (
 	"context"

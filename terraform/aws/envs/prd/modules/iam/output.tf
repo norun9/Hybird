@@ -6,3 +6,7 @@ output "lambda_exec_role_arn" {
 output "ec2_bastion_role_name" {
   value = aws_iam_role.ec2_bastion_role.name
 }
+
+output "api_gateway_putlog_role" {
+  value = aws_iam_role.api_gateway_putlog_role.arn
+}
