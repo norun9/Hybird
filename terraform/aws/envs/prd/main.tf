@@ -17,7 +17,7 @@ terraform {
 
 provider "aws" {
   profile = local.aws_profile
-  region  = "ap-northeast-1"
+  region  = local.aws_region
   default_tags {
     tags = {
       Product = "hybird"
