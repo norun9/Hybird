@@ -15,6 +15,8 @@ PENDING
 
 ## Deployment Process
 
+> The following are Personal Notes
+
 ### Terraform
 
 ```bash
