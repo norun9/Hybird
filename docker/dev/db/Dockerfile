@@ -1,7 +1,4 @@
-FROM mysql:8.0.26
+FROM mysql:8.0.28
 
-RUN apt-get update \
-  ; apt-get upgrade -y \
-  && apt-get install -y mycli \
-  && apt-get -y clean \
-  && rm -rf /var/lib/apt/lists/*
+RUN RUN apt-get update && apt-get install -y python3-pip \
+      && pip3 install mycli
