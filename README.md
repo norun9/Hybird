@@ -15,7 +15,7 @@ PENDING
 
 ## Deployment Process
 
-> The following are Personal Notes
+> The following are personal notes
 
 ### Terraform
 
