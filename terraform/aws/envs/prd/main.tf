@@ -3,7 +3,7 @@ terraform {
     bucket         = "hybird-terraform-tfstate"
     key            = "./terraform.tfstate"
     region         = "ap-northeast-1"
-    # dynamodb_table = "terraform-locks"  # DynamoDB table for lock management (optional)
+    dynamodb_table = "Connections"  # DynamoDB table for lock management (optional)
     encrypt        = true
   }
   required_providers {

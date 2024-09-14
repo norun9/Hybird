@@ -38,6 +38,10 @@ func (mc *messageController) Create(c *gin.Context, p input.MessageInput) (*outp
 	return mc.messageIB.Create(ctx, p)
 }
 
+/*
+*
+@deprecated Transplant WebSocket function to Lambda
+*/
 func (mc *messageController) Receive(c *gin.Context, _ any) error {
 	// TODO: コントローラーの責任が集中しているため、ビジネスロジックやデータ処理の部分を分離する
 	conn, err := myws.Upgrader.Upgrade(c.Writer, c.Request, nil)

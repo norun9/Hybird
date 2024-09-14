@@ -1,4 +1,4 @@
-# DynamoDB テーブル (接続情報)
+# Create DynamoDB table named Connections
 resource "aws_dynamodb_table" "connections_table" {
   name         = "Connections"
   billing_mode = "PAY_PER_REQUEST"
