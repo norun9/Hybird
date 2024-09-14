@@ -7,6 +7,10 @@
 
 ## AWS Serverless Architecture
 
+### REST API
+PENDING
+
+### WebSocket API
 PENDING
 
 ## Deployment Process
