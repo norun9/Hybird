@@ -15,7 +15,7 @@ const Messages: React.FC = React.memo(() => {
     }
   }
 
-  const { socketRef, messages, setMessages } = useWebSocket(webSocketURL)
+  const { socketRef, messages, setMessages, sendActionName } = useWebSocket(webSocketURL)
 
   const groupMessagesByDate = (messages: IMessageRes[] | undefined): Record<string, IMessageRes[]> => {
     return (messages || []).reduce(
@@ -43,7 +43,8 @@ const Messages: React.FC = React.memo(() => {
   const sendWsMessage = (input: string) => {
     const ws = socketRef.current
     if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(input)
+      const message = JSON.stringify({ action: sendActionName, data: input })
+      ws.send(message)
     } else {
       throw new Error('WebSocket is not open')
     }
@@ -59,7 +60,7 @@ const Messages: React.FC = React.memo(() => {
     <div className='flex-1 flex flex-col bg-gray-50 overflow-hidden'>
       <div className='border-b border-gray-border-3 flex px-6 py-2 items-center flex-none shadow-xl'>
         <div className='flex flex-col justify-center h-9'>
-          <h3 className='text-white font-bold text-xl text-gray-100'>
+          <h3 className='font-bold text-xl text-gray-100'>
             {/*<span className='text-gray-400'>#</span> general*/}
             {/* Other Side Username */}
           </h3>

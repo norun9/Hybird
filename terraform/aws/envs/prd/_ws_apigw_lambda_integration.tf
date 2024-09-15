@@ -58,12 +58,6 @@ resource "aws_iam_role" "lambda_execution_role" {
       Principal = {
         Service = "lambda.amazonaws.com"
       }
-      }, {
-      Action = "sts:AssumeRole",
-      Effect = "Allow",
-      Principal = {
-        Service = "apigateway.amazonaws.com"
-      }
     }]
   })
 
@@ -91,11 +85,6 @@ resource "aws_iam_role" "lambda_execution_role" {
             "logs:PutLogEvents"
           ],
           Resource = "*"
-        },
-        {
-          "Effect" : "Allow",
-          "Action" : "lambda:InvokeFunction",
-          "Resource" : "*"
         }
       ]
     })

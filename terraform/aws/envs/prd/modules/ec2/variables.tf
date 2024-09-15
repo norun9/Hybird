@@ -4,10 +4,10 @@ variable "vpc_id" {
 
 variable "vpc_cidr_block" {
   description = "The CIDR block of the VPC"
-  type = string
+  type        = string
 }
 
-variable "subnet_id" {
+variable "public_subnet_id" {
   description = "The ID of the subnet to associate with the Lambda function"
   type        = string
 }

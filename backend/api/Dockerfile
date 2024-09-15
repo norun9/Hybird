@@ -13,7 +13,7 @@ FROM alpine:3.9
 RUN apk add ca-certificates tzdata
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.8.3 /lambda-adapter /opt/extensions/lambda-adapter
 COPY --from=build_base /tmp/gin/bootstrap /app/bootstrap
-COPY --from=build_base /tmp/gin/config.yml /app/config.yml
+COPY --from=build_base /tmp/gin/api/config.yml /app/config.yml
 
 EXPOSE 8080
 

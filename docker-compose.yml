@@ -4,14 +4,15 @@ services:
   air:
     container_name: "air"
     build:
-      context: "./backend/api"
-      dockerfile: "../../docker/dev/air/Dockerfile"
-    command: "air -c .air.toml"
-    working_dir: "/app/go/dev"
+      context: "./docker/dev/air/"
+      dockerfile: "Dockerfile"
+    command: "air -c /app/go/dev/api/.air.toml"
+    working_dir: "/app/go/dev/api"
     ports:
       - "8080:8080"
     volumes:
-      - ./backend:/app/go/dev
+      - ./backend/api:/app/go/dev/api
+      - ./backend/pkg:/app/go/dev/pkg
     depends_on:
       - db
   db:
@@ -39,23 +40,5 @@ services:
       - ./backend/db/etc/mysql/conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
     healthcheck:
       test: [ "CMD", "mysql", "-h127.0.0.1", "-P3306", "-uhybird", "-e", "quit" ]
-  dynamodb:
-    image: amazon/dynamodb-local
-    container_name: dynamodb-local
-    ports:
-      - "8000:8000"
-    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath . -optimizeDbBeforeStartup"
-    volumes:
-      - dynamodb:/home/dynamodblocal
-  awscli:
-    build:
-      context: "./docker/dev/awscli"
-      dockerfile: .
-    entrypoint: [ "" ]
-    command:
-      - /bin/sh
-    volumes:
-      - ./bin:/usr/app
 volumes:
   db:
-  dynamodb:

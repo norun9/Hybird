@@ -24,23 +24,35 @@ locals {
         docker push ${local.ecr_reg}/${local.ecr_repo}:{tag}
   EOT
 
-  # command for building REST API Docker image
+  # command for building "REST API" Docker image
   api_dkr_build_cmd = replace(
     replace(
   replace(local.dkr_img_build_push_cmd, "{build_arg}", ""), "{tag}", "api"), "{dkrfile_path}", "${local.dkr_img_src_path}/Dockerfile")
 
-  # command for building WebSocket connect Docker image
+  # command for building WebSocket "connect" Docker image
   ws_connect_dkr_build_cmd = replace(
     replace(
-  replace(local.dkr_img_build_push_cmd, "{build_arg}", "--build-arg LAMBDA_SOURCE_DIR=connect"), "{tag}", "ws_connect"), "{dkrfile_path}", "${local.ws_dkr_img_src_path}/Dockerfile")
+      replace(
+        local.dkr_img_build_push_cmd, "{build_arg}", "--build-arg LAMBDA_SOURCE_DIR=connect"
+      ), "{tag}", "ws_connect"
+    ), "{dkrfile_path}", "${local.ws_dkr_img_src_path}/Dockerfile"
+  )
 
-  # command for building WebSocket disconnect Docker image
+  # command for building WebSocket "disconnect" Docker image
   ws_disconnect_dkr_build_cmd = replace(
     replace(
-  replace(local.dkr_img_build_push_cmd, "{build_arg}", "--build-arg LAMBDA_SOURCE_DIR=disconnect"), "{tag}", "ws_disconnect"), "{dkrfile_path}", "${local.ws_dkr_img_src_path}/Dockerfile")
+      replace(
+        local.dkr_img_build_push_cmd, "{build_arg}", "--build-arg LAMBDA_SOURCE_DIR=disconnect"
+      ), "{tag}", "ws_disconnect"
+    ), "{dkrfile_path}", "${local.ws_dkr_img_src_path}/Dockerfile"
+  )
 
-  # command for building WebSocket default Docker image
+  # command for building WebSocket "default" Docker image
   ws_default_dkr_build_cmd = replace(
     replace(
-  replace(local.dkr_img_build_push_cmd, "{build_arg}", "--build-arg LAMBDA_SOURCE_DIR=_default"), "{tag}", "ws_default"), "{dkrfile_path}", "${local.ws_dkr_img_src_path}/Dockerfile")
+      replace(
+        local.dkr_img_build_push_cmd, "{build_arg}", "--build-arg LAMBDA_SOURCE_DIR=_default"
+      ), "{tag}", "ws_default"
+    ), "{dkrfile_path}", "${local.ws_dkr_img_src_path}/Dockerfile"
+  )
 }

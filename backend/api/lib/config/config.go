@@ -44,10 +44,10 @@ func Prepare() AppConfig {
 
 	_, b, _, _ := runtime.Caller(0)
 	configDir := filepath.Dir(b)
-	pkgDir := filepath.Dir(configDir)
-	backendDir := filepath.Dir(pkgDir)
+	libDir := filepath.Dir(configDir)
+	apiDir := filepath.Dir(libDir)
 
-	viper.AddConfigPath(backendDir)
+	viper.AddConfigPath(apiDir)
 
 	env := viper.GetString("env.name")
 
