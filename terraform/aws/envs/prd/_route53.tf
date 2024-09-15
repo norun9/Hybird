@@ -1,10 +1,10 @@
 resource "aws_route53_zone" "hybird_click" {
-  name = "hybird.click"
+  name = local.site_domain
 }
 
 resource "aws_route53_record" "hybird_click_a" {
   zone_id = aws_route53_zone.hybird_click.zone_id
-  name    = "hybird.click"
+  name    = local.site_domain
   type    = "A"
 
   alias {
@@ -16,7 +16,7 @@ resource "aws_route53_record" "hybird_click_a" {
 
 resource "aws_route53_record" "hybird_click_ns" {
   zone_id = aws_route53_zone.hybird_click.zone_id
-  name    = "hybird.click"
+  name    = local.site_domain
   type    = "NS"
   ttl     = 172800
   records = ["ns-89.awsdns-11.com.", "ns-1160.awsdns-17.org.", "ns-788.awsdns-34.net.", "ns-1992.awsdns-57.co.uk."]
@@ -24,7 +24,7 @@ resource "aws_route53_record" "hybird_click_ns" {
 
 resource "aws_route53_record" "hybird_click_soa" {
   zone_id = aws_route53_zone.hybird_click.zone_id
-  name    = "hybird.click"
+  name    = local.site_domain
   type    = "SOA"
   ttl     = 900
   records = ["ns-89.awsdns-11.com. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"]

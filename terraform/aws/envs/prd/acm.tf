@@ -5,7 +5,7 @@ provider "aws" {
 
 data "aws_acm_certificate" "cert" {
   provider    = aws.us_east_1
-  domain      = "hybird.click"
+  domain      = local.site_domain
   statuses    = ["ISSUED"]
   most_recent = true
 }

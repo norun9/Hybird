@@ -2,6 +2,7 @@ locals {
   aws_account = var.aws_account # AWS account
   aws_region  = var.aws_region  # AWS region
   aws_profile = var.aws_profile # AWS profile
+  site_domain = var.site_domain
 
   apigateway_deploy_stage = "prd"
 

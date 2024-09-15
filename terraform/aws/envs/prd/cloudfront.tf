@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "hybird_distribution" {
   aliases = [
-    "hybird.click",
+    local.site_domain,
   ]
   default_root_object = "index.html"
   enabled             = true
