@@ -30,7 +30,6 @@ func handleRequest(ctx context.Context, req *events.APIGatewayWebsocketProxyRequ
 	svc := mydynamodb.NewDBSession(ctx)
 	connection, err := mydynamodb.GetAllConnections(ctx, svc)
 	if err != nil {
-		log.Error("Failed to retrieve connections from DynamoDB", zap.Error(err))
 		return apigw.InternalServerErrorResponse(), err
 	}
 

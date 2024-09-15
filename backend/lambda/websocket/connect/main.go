@@ -25,13 +25,24 @@ func handleRequest(ctx context.Context, req *events.APIGatewayWebsocketProxyRequ
 		zap.String("requestId", req.RequestContext.RequestID),
 		zap.String("connectionId", connectionId))
 
+	svc := mydynamodb.NewDBSession(ctx)
+
+	existingConnection, err := mydynamodb.GetAllConnections(ctx, svc)
+	if err != nil {
+		return apigw.InternalServerErrorResponse(), err
+	}
+
+	// Delete existing ConnectionId from DynamoDB
+	err = mydynamodb.DeleteConnectionId(ctx, svc, existingConnection.ConnectionId)
+	if err != nil {
+		return apigw.InternalServerErrorResponse(), err
+	}
+
 	item := mydynamodb.Item{
 		ConnectionId: connectionId,
 	}
 
-	svc := mydynamodb.NewDBSession(ctx)
-
-	err := item.PutConnectionId(ctx, svc)
+	err = item.PutConnectionId(ctx, svc)
 	if err != nil {
 		return apigw.InternalServerErrorResponse(), err
 	}

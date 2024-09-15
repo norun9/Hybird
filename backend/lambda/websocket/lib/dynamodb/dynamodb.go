@@ -24,16 +24,19 @@ func GetAllConnections(ctx context.Context, svc *dynamodb.Client) (*Item, error)
 
 	result, err := svc.Scan(ctx, input)
 	if err != nil {
-		return nil, fmt.Errorf("failed to scan table: %w", err)
+		log.Error("failed to scan table", zap.Error(err))
+		return nil, err
 	}
 
 	var items []Item
 	err = attributevalue.UnmarshalListOfMaps(result.Items, &items)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal items: %w", err)
+		log.Error("failed to unmarshal items", zap.Error(err))
+		return nil, err
 	}
 
 	if len(items) == 0 {
+		log.Error("no matching ConnectionId found")
 		return nil, fmt.Errorf("no matching ConnectionId found")
 	}
 
