@@ -46,8 +46,6 @@ The architecture promotes separation of concerns, making the system more maintai
 ## Layer Overview
 
 ### Entities (domain)
-Located in the `domain` directory, the entities represent the core business objects and rules. 
-This layer is independent of any other layers and frameworks.
 
 - **Model**: Contains the business entities (e.g., message.go).
 
@@ -55,9 +53,6 @@ This layer is independent of any other layers and frameworks.
 - No dependencies
 
 ### Use Cases (usecase)
-
-Located in the `usecase` directory, this layer contains the application-specific business rules.  
-It orchestrates the flow of data to and from the entities and leverages the interfaces defined in the `domain` layer.
 
 - **Interactor**: Contains the business logic that interacts with the entities.
 - **DTO**: Data Transfer Objects used for input and output (e.g., input and output directories).
@@ -68,9 +63,6 @@ It orchestrates the flow of data to and from the entities and leverages the inte
 - usecase
 
 ### Interface Adapters (interfaces)
-
-Located in the `interfaces` directory,  
-this layer converts data from the format most convenient for the use cases and entities to the format most convenient for external agents such as databases and the web.
 
 - **Controllers**: Handle the HTTP requests and responses, interacting with the use cases.
 - **Gateways**
@@ -83,9 +75,6 @@ this layer converts data from the format most convenient for the use cases and e
 
 ### Frameworks & Drivers (external)
 
-The Frameworks & Drivers layer, often referred to as the `external` layer, contains components and frameworks that interact directly with external systems and provide low-level implementations of interfaces defined in the Interface Adapters layer. 
-This layer is responsible for interacting with external services, databases, and other systems that your application needs to function.
-
 - **Web Frameworks**: Gin, which handle HTTP requests and responses.
 - **Database Drivers:**: MySQL drivers, which enable interaction with relational databases.
 
@@ -93,8 +82,5 @@ This layer is responsible for interacting with external services, databases, and
 - No dependencies
 
 ### Dependency Injection (injector) 
-
-Located in the `injector` directory, this layer manages dependency injection configurations.  
-This directory is unrelated to the clean architecture.
 
 - **Wire**: Configures and initializes the dependencies using Google Wire (e.g., wire.go).
