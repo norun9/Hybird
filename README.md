@@ -12,8 +12,6 @@
 </div>
 
 
-![hybird_serverless drawio (1)]()
-
 ### WebSocket API
 PENDING
 
