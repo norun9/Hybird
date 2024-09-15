@@ -46,8 +46,6 @@ const MessageInput: React.FC<Props> = React.memo(({ sendWsMessage }) => {
   const onSubmit: SubmitHandler<MessageFormValues> = async (data: MessageFormValues) => {
     if (isSubmitting) return // Prevent additional calls
 
-    console.log('Call')
-
     setIsSubmitting(true)
     try {
       // Timestamp for checking message duplicates

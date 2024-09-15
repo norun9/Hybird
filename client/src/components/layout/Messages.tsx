@@ -43,7 +43,6 @@ const Messages: React.FC = React.memo(() => {
   const sendWsMessage = (input: string) => {
     const ws = socketRef.current
     if (ws && ws.readyState === WebSocket.OPEN) {
-      console.log('Sending message:', input)
       ws.send(input)
     } else {
       throw new Error('WebSocket is not open')
