@@ -8,7 +8,7 @@
 ## AWS Serverless Architecture
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/49d50d44-1b7a-4660-ba45-e3ce4b8e838c" alt="Clean Boundary">
+  <img src="[https://github.com/user-attachments/assets/49d50d44-1b7a-4660-ba45-e3ce4b8e838c](https://github.com/user-attachments/assets/41e45901-ff8b-48f0-97a7-2460f20ba4c7)" alt="Serverless">
 </div>
 
 ### WebSocket API
