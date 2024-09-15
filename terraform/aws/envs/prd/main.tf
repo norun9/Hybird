@@ -36,14 +36,14 @@ provider "aws" {
 #   }
 # }
 #
-# resource "null_resource" "build_push_ws_connect_dkr_img" {
-#   triggers = {
-#     detect_docker_source_changes = timestamp()
-#   }
-#   provisioner "local-exec" {
-#     command = local.ws_connect_dkr_build_cmd
-#   }
-# }
+resource "null_resource" "build_push_ws_connect_dkr_img" {
+  triggers = {
+    detect_docker_source_changes = timestamp()
+  }
+  provisioner "local-exec" {
+    command = local.ws_connect_dkr_build_cmd
+  }
+}
 #
 # resource "null_resource" "build_push_ws_disconnect_dkr_img" {
 #   triggers = {
@@ -90,7 +90,7 @@ data "aws_ecr_image" "api" {
 data "aws_ecr_image" "ws_connect" {
   repository_name = local.ecr_repo
   image_tag       = "ws_connect"
-  #   depends_on      = [null_resource.build_push_ws_connect_dkr_img]
+  depends_on      = [null_resource.build_push_ws_connect_dkr_img]
 }
 
 data "aws_ecr_image" "ws_disconnect" {

@@ -2,14 +2,13 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/norun9/HyBird/backend/lambda/websocket/lib/apigw"
 	mydynamodb "github.com/norun9/HyBird/backend/lambda/websocket/lib/dynamodb"
 	"github.com/norun9/HyBird/backend/pkg/log"
 	"go.uber.org/zap"
-	"os"
+	"net/url"
 )
 
 func main() {
@@ -19,13 +18,6 @@ func main() {
 func handleRequest(ctx context.Context, req *events.APIGatewayWebsocketProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.InitLogger()
 	defer log.Sync()
-
-	// Get the API Gateway endpoint from environment variables
-	endpoint, err := getEnv("API_GATEWAY_ENDPOINT")
-	if err != nil {
-		logErrorAndReturn(err, "API_GATEWAY_ENDPOINT is not set")
-		return apigw.InternalServerErrorResponse(), nil
-	}
 
 	// Log the received message from WebSocket
 	message := req.Body
@@ -40,7 +32,12 @@ func handleRequest(ctx context.Context, req *events.APIGatewayWebsocketProxyRequ
 	}
 
 	// Initialize API Gateway Management Client
-	apigwCli, err := apigw.NewAPIGatewayClient(ctx, endpoint)
+	callbackURL := url.URL{
+		Scheme: "https",
+		Host:   req.RequestContext.DomainName,
+		Path:   req.RequestContext.Stage,
+	}
+	apigwCli, err := apigw.NewAPIGatewayClient(ctx, callbackURL)
 	if err != nil {
 		logErrorAndReturn(err, "Failed to initialize API Gateway client")
 		return apigw.InternalServerErrorResponse(), err
@@ -61,15 +58,6 @@ func handleRequest(ctx context.Context, req *events.APIGatewayWebsocketProxyRequ
 	}
 
 	return apigw.OkResponse(), nil
-}
-
-// getEnv fetches the value of the environment variable or returns an error if not set
-func getEnv(key string) (string, error) {
-	value := os.Getenv(key)
-	if value == "" {
-		return "", fmt.Errorf("%s environment variable is not set", key)
-	}
-	return value, nil
 }
 
 // logErrorAndReturn logs an error message and returns it

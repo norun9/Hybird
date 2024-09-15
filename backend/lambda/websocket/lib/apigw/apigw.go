@@ -7,10 +7,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewaymanagementapi"
 	"github.com/norun9/HyBird/backend/pkg/log"
 	"go.uber.org/zap"
+	"net/url"
 )
 
 // NewAPIGatewayClient creates a new API Gateway Management API client
-func NewAPIGatewayClient(ctx context.Context, endpoint string) (*apigatewaymanagementapi.Client, error) {
+func NewAPIGatewayClient(ctx context.Context, callbackURL url.URL) (*apigatewaymanagementapi.Client, error) {
 	// Load default AWS config
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
@@ -18,10 +19,10 @@ func NewAPIGatewayClient(ctx context.Context, endpoint string) (*apigatewaymanag
 	}
 
 	// Create the ApiGatewayManagementApi client with the specified endpoint
-	return apigatewaymanagementapi.New(apigatewaymanagementapi.Options{
-		Region:       cfg.Region,
-		Credentials:  cfg.Credentials,
-		BaseEndpoint: aws.String(endpoint),
+	return apigatewaymanagementapi.NewFromConfig(cfg, func(o *apigatewaymanagementapi.Options) {
+		o.Region = cfg.Region
+		o.Credentials = cfg.Credentials
+		o.BaseEndpoint = aws.String(callbackURL.String())
 	}), nil
 }
 

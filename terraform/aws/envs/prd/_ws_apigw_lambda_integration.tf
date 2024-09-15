@@ -131,8 +131,7 @@ resource "aws_lambda_function" "default_lambda" {
 
   environment {
     variables = {
-      TABLE_NAME           = aws_dynamodb_table.connections_table.name
-      API_GATEWAY_ENDPOINT = aws_apigatewayv2_api.websocket_api.api_endpoint
+      TABLE_NAME = aws_dynamodb_table.connections_table.name
     }
   }
 }
