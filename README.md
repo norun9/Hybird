@@ -3,7 +3,7 @@
 [See our Clean Architecture for more details](backend/api/doc/README.md)
 
 
-## AWS Serverless Architecture
+## AWS Architecture
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/dcaf8479-a440-471b-a7dc-4b8c2b6d36ec" alt="serverless">
