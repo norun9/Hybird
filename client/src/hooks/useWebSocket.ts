@@ -12,6 +12,10 @@ export const useWebSocket = (url: string | undefined) => {
       throw new Error('No websocket URL provided')
     }
 
+    if (socketRef.current) {
+      socketRef.current.close()
+    }
+
     const ws: ReconnectingWebSocket = new ReconnectingWebSocket(url)
     socketRef.current = ws
 
@@ -50,13 +54,16 @@ export const useWebSocket = (url: string | undefined) => {
     }
 
     return () => {
-      ws.onmessage = null
-      ws.onerror = null
-      ws.onclose = null
-      ws.onopen = null
-      ws.close()
+      if (socketRef.current) {
+        socketRef.current.onmessage = null
+        socketRef.current.onerror = null
+        socketRef.current.onclose = null
+        socketRef.current.onopen = null
+        socketRef.current.close()
+        socketRef.current = null
+      }
     }
-  }, [url])
+  }, [])
 
   return { socketRef, messages, setMessages }
 }
