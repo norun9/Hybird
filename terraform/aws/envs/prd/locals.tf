@@ -3,6 +3,8 @@ locals {
   aws_region  = var.aws_region  # AWS region
   aws_profile = var.aws_profile # AWS profile
 
+  apigateway_deploy_stage = "prd"
+
   cors_allowed_origin = var.cors_allowed_origin
 
   ecr_reg  = "${local.aws_account}.dkr.ecr.${local.aws_region}.amazonaws.com"

@@ -67,6 +67,11 @@ resource "aws_iam_role" "lambda_execution_role" {
       Version = "2012-10-17",
       Statement = [
         {
+          Effect   = "Allow",
+          Action   = "execute-api:ManageConnections",
+          Resource = "arn:aws:execute-api:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${aws_apigatewayv2_api.websocket_api.id}/${local.apigateway_deploy_stage}/POST/@connections/*"
+        },
+        {
           Effect = "Allow",
           Action = [
             "dynamodb:PutItem",
@@ -193,7 +198,7 @@ resource "aws_apigatewayv2_stage" "websocket_stage" {
   depends_on = [aws_api_gateway_account.account]
 
   api_id      = aws_apigatewayv2_api.websocket_api.id
-  name        = "prd"
+  name        = local.apigateway_deploy_stage
   auto_deploy = true
 
   access_log_settings {

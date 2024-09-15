@@ -13,6 +13,7 @@ interface Props {
 const MessageInput: React.FC<Props> = React.memo(({ sendWsMessage }) => {
   const [valid, setValid] = useState<boolean>(false)
   const formFieldName = 'content'
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const { postData } = usePost<IMessageReq, IMessageRes>('/v1/messages')
   const {
     register,
@@ -43,6 +44,11 @@ const MessageInput: React.FC<Props> = React.memo(({ sendWsMessage }) => {
   }, [trigger, watch])
 
   const onSubmit: SubmitHandler<MessageFormValues> = async (data: MessageFormValues) => {
+    if (isSubmitting) return // Prevent additional calls
+
+    console.log('Call')
+
+    setIsSubmitting(true)
     try {
       // Timestamp for checking message duplicates
       const timestamp = Date.now()
@@ -53,6 +59,8 @@ const MessageInput: React.FC<Props> = React.memo(({ sendWsMessage }) => {
       setValue(formFieldName, '')
     } catch (error) {
       console.error('Failed to post message', error)
+    } finally {
+      setIsSubmitting(false) // Re-enable submission once complete
     }
   }
 
@@ -71,8 +79,8 @@ const MessageInput: React.FC<Props> = React.memo(({ sendWsMessage }) => {
           />
           <button
             type='submit'
-            disabled={!!errors.content}
-            className='bg-gray-56 border-l border-gray-56 w-[4rem] flex flex-row items-center justify-center text-3xl text-gray-light border-r-4 border-gray-56 p-2'>
+            disabled={isSubmitting || !!errors.content}
+            className='bg-gray-56 border-l w-[4rem] flex flex-row items-center justify-center text-3xl text-gray-light border-r-4 border-gray-56 p-2'>
             {valid && !errors.content ? (
               <Image
                 src='/assets/icon/message/send_enabled.svg'
