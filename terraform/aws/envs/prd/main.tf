@@ -27,14 +27,14 @@ provider "aws" {
 
 # NOTE:Now we no longer need the latest Docker images for Lambda.
 # local-exec for build and push of docker image
-# resource "null_resource" "build_push_dkr_img" {
-#   triggers = {
-#     detect_docker_source_changes = timestamp()
-#   }
-#   provisioner "local-exec" {
-#     command = local.api_dkr_build_cmd
-#   }
-# }
+resource "null_resource" "build_push_dkr_img" {
+  triggers = {
+    detect_docker_source_changes = timestamp()
+  }
+  provisioner "local-exec" {
+    command = local.api_dkr_build_cmd
+  }
+}
 #
 resource "null_resource" "build_push_ws_connect_dkr_img" {
   triggers = {
@@ -45,23 +45,23 @@ resource "null_resource" "build_push_ws_connect_dkr_img" {
   }
 }
 #
-# resource "null_resource" "build_push_ws_disconnect_dkr_img" {
-#   triggers = {
-#     detect_docker_source_changes = timestamp()
-#   }
-#   provisioner "local-exec" {
-#     command = local.ws_disconnect_dkr_build_cmd
-#   }
-# }
+resource "null_resource" "build_push_ws_disconnect_dkr_img" {
+  triggers = {
+    detect_docker_source_changes = timestamp()
+  }
+  provisioner "local-exec" {
+    command = local.ws_disconnect_dkr_build_cmd
+  }
+}
 #
-# resource "null_resource" "build_push_ws_default_dkr_img" {
-#   triggers = {
-#     detect_docker_source_changes = timestamp()
-#   }
-#   provisioner "local-exec" {
-#     command = local.ws_default_dkr_build_cmd
-#   }
-# }
+resource "null_resource" "build_push_ws_default_dkr_img" {
+  triggers = {
+    detect_docker_source_changes = timestamp()
+  }
+  provisioner "local-exec" {
+    command = local.ws_default_dkr_build_cmd
+  }
+}
 
 # NOTE: Maybe I don't need to modularize it, but I'd like to use 'module'.
 
@@ -84,7 +84,7 @@ module "ecr" {
 data "aws_ecr_image" "api" {
   repository_name = local.ecr_repo
   image_tag       = "api"
-  #   depends_on      = [null_resource.build_push_dkr_img]
+  depends_on      = [null_resource.build_push_dkr_img]
 }
 
 data "aws_ecr_image" "ws_connect" {
@@ -96,13 +96,13 @@ data "aws_ecr_image" "ws_connect" {
 data "aws_ecr_image" "ws_disconnect" {
   repository_name = local.ecr_repo
   image_tag       = "ws_disconnect"
-  #   depends_on      = [null_resource.build_push_ws_disconnect_dkr_img]
+  depends_on      = [null_resource.build_push_ws_disconnect_dkr_img]
 }
 
 data "aws_ecr_image" "ws_default" {
   repository_name = local.ecr_repo
   image_tag       = "ws_default"
-  #   depends_on      = [null_resource.build_push_ws_default_dkr_img]
+  depends_on      = [null_resource.build_push_ws_default_dkr_img]
 }
 
 module "iam" {
@@ -141,6 +141,6 @@ module "api_gw" {
 #   source                = "./modules/ec2"
 #   vpc_id                = module.vpc.vpc_id
 #   vpc_cidr_block        = module.vpc.vpc_cidr_block
-#   public_subnet_id             = module.vpc.public_subnet_id
+#   public_subnet_id      = module.vpc.public_subnet_id
 #   ec2_bastion_role_name = module.iam.ec2_bastion_role_name
 # }
