@@ -4,7 +4,6 @@ import { getFormattedCurrentTime } from '@/utils/time'
 import { IMessage } from '@/types/components'
 
 export const useWebSocket = (url: string | undefined) => {
-  const sendActionName = 'sendmessage'
   const socketRef = useRef<ReconnectingWebSocket | null>(null)
   const [messages, setMessages] = useState<IMessage[]>([])
 
@@ -59,5 +58,5 @@ export const useWebSocket = (url: string | undefined) => {
     }
   }, [url])
 
-  return { socketRef, messages, setMessages, sendActionName }
+  return { socketRef, messages, setMessages }
 }

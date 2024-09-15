@@ -160,7 +160,7 @@ resource "aws_lambda_permission" "allow_apigateway_ws_default_invoke" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.default_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${aws_apigatewayv2_api.websocket_api.id}/*/$default"
+  source_arn    = "arn:aws:execute-api:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${aws_apigatewayv2_api.websocket_api.id}/*"
 }
 
 # Create Lambda integration required for connect
@@ -207,7 +207,8 @@ resource "aws_apigatewayv2_stage" "websocket_stage" {
       routeKey       = "$context.routeKey",
       status         = "$context.status",
       protocol       = "$context.protocol",
-      responseLength = "$context.responseLength"
+      responseLength = "$context.responseLength",
+      errorMessage   = "$context.error.message"
     })
   }
 
