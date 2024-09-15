@@ -20,7 +20,7 @@ export const useWebSocket = (url: string | undefined) => {
     }
 
     ws.onmessage = (event: MessageEvent<string>) => {
-      console.log('Received message:', event.data)
+      console.log('Received message:', event)
       const dataArr = event.data.split('_')
       const content = dataArr[0]
       const timestamp = Number(dataArr[1])
