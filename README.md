@@ -1,8 +1,6 @@
 ## Backend Architecture
 
-| Documents                                                |
-|:---------------------------------------------------------|
-| [Clean Architecture](backend/api/doc/README.md) |
+[Clean Architecture README](backend/api/doc/README.md)
 
 
 ## AWS Serverless Architecture
