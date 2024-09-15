@@ -7,8 +7,9 @@
 
 ## AWS Serverless Architecture
 
-### REST API
-PENDING
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/49d50d44-1b7a-4660-ba45-e3ce4b8e838c" alt="Clean Boundary">
+</div>
 
 ### WebSocket API
 PENDING
