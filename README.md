@@ -13,7 +13,11 @@
 
 
 ### WebSocket API
-PENDING
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/cb3d706a-1aa0-46ee-ac21-6be7873ecf99" alt="websocket">
+</div>
+
 
 ## Deployment Process
 
