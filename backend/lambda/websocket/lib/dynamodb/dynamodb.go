@@ -17,7 +17,7 @@ type Item struct {
 	ConnectionId string
 }
 
-func GetAllConnections(ctx context.Context, svc *dynamodb.Client) (*Item, error) {
+func GetAllConnections(ctx context.Context, svc *dynamodb.Client) ([]Item, error) {
 	input := &dynamodb.ScanInput{
 		TableName: aws.String("Connections"),
 	}
@@ -35,12 +35,7 @@ func GetAllConnections(ctx context.Context, svc *dynamodb.Client) (*Item, error)
 		return nil, err
 	}
 
-	if len(items) == 0 {
-		log.Error("no matching ConnectionId found")
-		return nil, fmt.Errorf("no matching ConnectionId found")
-	}
-
-	return &items[0], nil
+	return items, nil
 }
 
 func (i Item) PutConnectionId(ctx context.Context, svc *dynamodb.Client) error {

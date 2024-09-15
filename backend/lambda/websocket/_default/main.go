@@ -27,12 +27,6 @@ func handleRequest(ctx context.Context, req *events.APIGatewayWebsocketProxyRequ
 		zap.String("connectionId", req.RequestContext.ConnectionID),
 		zap.String("message", message))
 
-	svc := mydynamodb.NewDBSession(ctx)
-	connection, err := mydynamodb.GetAllConnections(ctx, svc)
-	if err != nil {
-		return apigw.InternalServerErrorResponse(), err
-	}
-
 	// Initialize API Gateway Management Client
 	callbackURL := url.URL{
 		Scheme: "https",
@@ -45,14 +39,21 @@ func handleRequest(ctx context.Context, req *events.APIGatewayWebsocketProxyRequ
 		return apigw.InternalServerErrorResponse(), err
 	}
 
-	// Send the message to all connected clients
-	connectionId := connection.ConnectionId
-	err = apigw.SendMessageToConnection(ctx, apigwCli, connectionId, message)
+	svc := mydynamodb.NewDBSession(ctx)
+	connections, err := mydynamodb.GetAllConnections(ctx, svc)
 	if err != nil {
 		return apigw.InternalServerErrorResponse(), err
-	} else {
-		log.Info("Message sent successfully to connection",
-			zap.String("connectionId", connectionId))
+	}
+
+	// Send the message to all connected clients
+	for _, conn := range connections {
+		err = apigw.SendMessageToConnection(ctx, apigwCli, conn.ConnectionId, message)
+		if err != nil {
+			return apigw.InternalServerErrorResponse(), err
+		} else {
+			log.Info("Message sent successfully to connection",
+				zap.String("connectionId", conn.ConnectionId))
+		}
 	}
 
 	return apigw.OkResponse(), nil
