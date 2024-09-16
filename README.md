@@ -28,7 +28,9 @@
 
 > The following are personal notes
 
-### Terraform
+
+
+### <img src="https://github.com/user-attachments/assets/ad741f50-c034-4167-9982-8db380149315" alt="HashiCorp Terraform" width="20"/>Terraform
 
 ```bash
 export AWS_PROFILE=your_iam_user_name
