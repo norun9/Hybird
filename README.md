@@ -45,7 +45,7 @@ Run GitHub Actions manually ([ssg_deploy.yml](.github/workflows/ssg_deploy.yml))
 ### Goose Migration to RDS via Bastion Host
 
 > [!NOTE]
-> Integrate the migration process into the Continuous Deployment (CD) pipeline to automate database updates during deployments.
+> In the future, we plan to integrate the migration process into the Continuous Deployment (CD) pipeline to automate database updates during deployments.
 
 Follow these steps to perform Goose migration to RDS instance via Bastion host.
 
