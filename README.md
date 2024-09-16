@@ -30,7 +30,7 @@
 
 
 
-### <img src="https://github.com/user-attachments/assets/ad741f50-c034-4167-9982-8db380149315" alt="HashiCorp Terraform" width="20"/>Terraform
+### <img src="https://github.com/user-attachments/assets/ad741f50-c034-4167-9982-8db380149315" alt="HashiCorp Terraform" width="20"/> Terraform
 
 ```bash
 export AWS_PROFILE=your_iam_user_name
@@ -40,7 +40,7 @@ terraform plan -out=tfplan
 terraform apply "tfplan"
 ```
 
-### Frontend
+### <img src="https://github.com/user-attachments/assets/23b6ca65-c911-4618-8a7e-ac2010cbebd1" alt="Next js" width="20"/> Next.js
 
 Run GitHub Actions manually ([ssg_deploy.yml](.github/workflows/ssg_deploy.yml))
 
