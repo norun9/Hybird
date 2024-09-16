@@ -44,7 +44,7 @@ terraform apply "tfplan"
 
 Run GitHub Actions manually ([ssg_deploy.yml](.github/workflows/ssg_deploy.yml))
 
-### Goose Migration to RDS via Bastion Host
+## Goose Migration to RDS via Bastion Host
 
 > [!NOTE]
 > In the future, we plan to integrate the migration process into the Continuous Deployment (CD) pipeline to automate database updates during deployments.
