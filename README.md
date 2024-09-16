@@ -20,7 +20,7 @@
 ### Frontend
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/60b3d305-4b52-4fe5-9a5f-eabc122fe34e" alt="frontend">
+  <img src="https://github.com/user-attachments/assets/c0b308f3-79a8-4251-87eb-d23375ad274f" alt="frontend">
 </div>
 
 
