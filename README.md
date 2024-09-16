@@ -79,7 +79,7 @@ goose --version
 
 #### Step 4: Transfer Migration Directory to the Home Directory on Bastion
 
-To transfer the migration directory from your local machine to the Bastion instance, use the following command.
+To transfer the migration directory from "your local machine" to the Bastion instance, use the following command.
 ```bash
 # /home/ec2-user/ is the Bastion home directory
 scp -r -i "your_keypair.pem" your_migration_files_dir ec2-user@<DNS>:/home/ec2-user/
