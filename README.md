@@ -5,15 +5,22 @@
 
 ## AWS Architecture
 
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/dcaf8479-a440-471b-a7dc-4b8c2b6d36ec" alt="serverless">
-</div>
+### Backend
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/830a0e75-4cd3-437f-be9c-c5726c3081fe" alt="backend">
+</div>
 
 ### WebSocket API
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/cb3d706a-1aa0-46ee-ac21-6be7873ecf99" alt="websocket">
+</div>
+
+### Frontend
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/60b3d305-4b52-4fe5-9a5f-eabc122fe34e" alt="frontend">
 </div>
 
 
