@@ -42,12 +42,12 @@ terraform apply "tfplan"
 
 Run GitHub Actions manually ([ssg_deploy.yml](.github/workflows/ssg_deploy.yml))
 
-### Goose Migration to RDS via Bastion
+### Goose Migration to RDS via Bastion Host
 
 > [!NOTE]
 > Integrate the migration process into the Continuous Deployment (CD) pipeline to automate database updates during deployments.
 
-Follow these steps to perform a Goose migration to an RDS instance via a Bastion host.
+Follow these steps to perform Goose migration to RDS instance via Bastion host.
 
 #### Step 1: SSH into the Bastion Host
 ```bash
@@ -55,29 +55,31 @@ ssh -i "path/to/your-keypair.pem" ec2-user@<EC2_Public_IP>
 ```
 
 #### Step 2: Connect to the RDS Instance
-Once logged into the Bastion, use the following command to connect to your RDS instance.
+Once logged into the Bastion, use the following command to connect to your RDS instance in the shell.
 ```bash
 mysql -h <RDS_Endpoint> -u <DB_User> -p
 ```
 
 #### Step 3: Install Goose
+
+Use the following command to install Goose in the shell.
 ```bash
-# Download the Goose installation script:
+# Download the Goose installation script
 curl -fsSL https://raw.githubusercontent.com/pressly/goose/master/install.sh -o goose | sh
 
-# Make the Goose binary executable:
+# Make the Goose binary executable
 chmod +x goose
 
-# Move Goose to /usr/local/bin to make it accessible globally:
+# Move Goose to /usr/local/bin to make it accessible globally
 sudo mv goose /usr/local/bin/
 
-# Verify that Goose is installed correctly:
+# Verify that Goose is installed correctly
 goose --version
 ```
 
 #### Step 4: Transfer Migration Directory to the Home Directory on Bastion
 
-To transfer the migration directory from your local machine to the Bastion instance, use the following command:
+To transfer the migration directory from your local machine to the Bastion instance, use the following command.
 ```bash
 # /home/ec2-user/ is the Bastion home directory
 scp -r -i "your_keypair.pem" your_migration_files_dir ec2-user@<DNS>:/home/ec2-user/
@@ -86,7 +88,7 @@ scp -r -i "your_keypair.pem" your_migration_files_dir ec2-user@<DNS>:/home/ec2-u
 
 #### Step 5: Run Goose Migration
 
-After transferring the migration files, run the Goose migration using the following command:
+After transferring the migration files, run the Goose migration using the following command in the shell.
 ```bash
 goose -dir /path/to/your_migrations_dir mysql '<DB_User>:<DB_Password>@tcp(<RDS_Endpoint>:3306)/<DB_Name>?parseTime=true' up
 ```
