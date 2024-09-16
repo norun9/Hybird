@@ -5,7 +5,7 @@
 
 ## AWS Architecture
 
-### Backend
+### REST API
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/830a0e75-4cd3-437f-be9c-c5726c3081fe" alt="backend">
